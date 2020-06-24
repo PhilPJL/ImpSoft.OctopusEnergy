@@ -2,9 +2,9 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -23,5 +23,5 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 #    - name: Test
 #      run: dotnet test --no-restore --verbosity normal
-#    - name: Publish
-#      run: dotnet nuget push ${{ github.workspace }}/ImpSoft.OctopusEnergy.Api/bin/Release/ImpSoft.OctopusEnergy.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+    - name: Publish
+      run: dotnet nuget push ${{ github.workspace }}/ImpSoft.OctopusEnergy.Api/bin/Release/ImpSoft.OctopusEnergy.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
