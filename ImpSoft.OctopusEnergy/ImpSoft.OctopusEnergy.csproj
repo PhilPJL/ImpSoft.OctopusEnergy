@@ -13,12 +13,12 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Energy-Api, Octopus Energy</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageIcon>icon.png</PackageIcon>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>none</PackageReleaseNotes>
     <Copyright>Copyright © Philip Lee 2020</Copyright>
     <FileVersion>1.0.0.0</FileVersion>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,14 +43,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\ImpSoft.MetOffice\ImpSoft.MetOffice.DataHub\icon.png">
+    <None Include="..\LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\..\ImpSoft.MetOffice\LICENSE.md">
+    <None Include="icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+
 
 </Project>
