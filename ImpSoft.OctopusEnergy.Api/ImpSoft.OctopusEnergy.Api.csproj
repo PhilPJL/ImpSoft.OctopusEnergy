@@ -1,7 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0-preview1</Version>
+    <Authors>Philip Lee</Authors>
+    <Company>ImpSoft</Company>
+    <Product>Octopus Energy API wrapper</Product>
+    <Description>Client for the Octopus Energy tariff and energy consumption API.</Description>
+    <RepositoryUrl>https://github.com/PhilPJL/ImpSoft.OctopusEnergy</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/PhilPJL/ImpSoft.OctopusEnergy</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Octopus-Api, Octopus-Energy, Energy-Consumption, Tariffs</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>none</PackageReleaseNotes>
+    <Copyright>Copyright © Philip Lee 2020</Copyright>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -23,6 +40,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

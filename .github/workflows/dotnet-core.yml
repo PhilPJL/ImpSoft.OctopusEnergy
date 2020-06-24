@@ -24,4 +24,4 @@ jobs:
 #    - name: Test
 #      run: dotnet test --no-restore --verbosity normal
 #    - name: Publish
-#      run: dotnet nuget push ${{ github.workspace }}/ImpSoft.OctopusEnergy.Api/bin/Release/ImpSoft.OctopusEnergy.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+#      run: dotnet nuget push ${{ github.workspace }}/ImpSoft.OctopusEnergy.Api/bin/Release/ImpSoft.OctopusEnergy.Api.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
