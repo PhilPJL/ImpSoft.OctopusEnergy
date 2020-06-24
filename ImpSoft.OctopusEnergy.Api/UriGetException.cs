@@ -1,9 +1,9 @@
-﻿using ImpSoft.OctopusEnergy.Properties;
+﻿using ImpSoft.OctopusEnergy.Api.Properties;
 using System;
 using System.Globalization;
 using System.Net.Http;
 
-namespace ImpSoft.OctopusEnergy
+namespace ImpSoft.OctopusEnergy.Api
 {
     public class UriGetException : Exception
     {

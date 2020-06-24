@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
@@ -7,26 +7,26 @@
     <Authors>Philip Lee</Authors>
     <Company>ImpSoft</Company>
     <Product>Octopus Energy API wrapper</Product>
-    <Description>Client for the Octopus Energy energy tariff and consumption API.</Description>
+    <Description>Client for the Octopus Energy tariff and energy consumption API.</Description>
     <RepositoryUrl>https://github.com/PhilPJL/ImpSoft.OctopusEnergy</RepositoryUrl>
     <PackageProjectUrl>https://github.com/PhilPJL/ImpSoft.OctopusEnergy</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Energy-Api, Octopus Energy</PackageTags>
+    <PackageTags>Octopus-Api, Octopus-Energy, Energy-Consumption, Tariffs</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageIcon>icon.png</PackageIcon>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>none</PackageReleaseNotes>
     <Copyright>Copyright © Philip Lee 2020</Copyright>
-    <FileVersion>1.0.0.*</FileVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -34,20 +34,20 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
+  
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
+  
   <ItemGroup>
-    <None Include="..\..\ImpSoft.MetOffice\ImpSoft.MetOffice.DataHub\icon.png">
+    <None Include="..\LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\..\ImpSoft.MetOffice\LICENSE.md">
+    <None Include="icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
