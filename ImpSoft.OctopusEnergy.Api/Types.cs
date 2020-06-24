@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace ImpSoft.OctopusEnergy
+namespace ImpSoft.OctopusEnergy.Api
 {
     [DataContract(Name = "")]
     public class PagedResults<TResult>

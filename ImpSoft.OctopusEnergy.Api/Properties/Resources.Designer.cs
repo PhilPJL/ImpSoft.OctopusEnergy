@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ImpSoft.OctopusEnergy.Properties {
+namespace ImpSoft.OctopusEnergy.Api.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ImpSoft.OctopusEnergy.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ImpSoft.OctopusEnergy.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ImpSoft.OctopusEnergy.Api.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

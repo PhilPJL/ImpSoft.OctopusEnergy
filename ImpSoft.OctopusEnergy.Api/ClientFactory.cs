@@ -1,4 +1,4 @@
-﻿namespace ImpSoft.OctopusEnergy
+﻿namespace ImpSoft.OctopusEnergy.Api
 {
     public static class ClientFactory
     {

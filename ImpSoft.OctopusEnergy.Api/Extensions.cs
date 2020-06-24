@@ -1,9 +1,9 @@
-﻿using ImpSoft.OctopusEnergy.Properties;
+﻿using ImpSoft.OctopusEnergy.Api.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ImpSoft.OctopusEnergy
+namespace ImpSoft.OctopusEnergy.Api
 {
     public static class Extensions
     {
@@ -25,7 +25,7 @@ namespace ImpSoft.OctopusEnergy
                 case Interval.Quarter: return "quarter";
                 case Interval.Default: return "";
                 default: return "";
-            };
+            }
         }
 
         public static TariffsByPeriod ForGsp(this Dictionary<string, TariffsByPeriod> value, string gsp)
