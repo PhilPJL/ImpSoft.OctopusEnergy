@@ -18,7 +18,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>none</PackageReleaseNotes>
     <Copyright>Copyright © Philip Lee 2020</Copyright>
-    <FileVersion>1.0.0.*</FileVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
