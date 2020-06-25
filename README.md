@@ -28,10 +28,10 @@ async Task GetAgileRates()
   var api = ClientFactory.Create();
 	
   // there should be one GSP (in this case '_C')
-  //var gsp = (await api.GetGridSupplyPointsAsync("SW16 2GY")).SingleOrDefault();
+  var gsp = (await api.GetGridSupplyPointsAsync("SW16 2GY")).SingleOrDefault();
 	
   // alternatively retrieve the GSP using the 'mpan'
-  var gsp = await api.GetGridSupplyPointAsync("1030051828896");
+  //var gsp = await api.GetGridSupplyPointAsync("<mpan>");
 	
   if(gsp == null){
     // handle error
