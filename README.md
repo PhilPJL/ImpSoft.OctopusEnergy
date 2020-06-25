@@ -19,7 +19,8 @@ async Task GetElectricityConsumption()
     "<mpan>", "<meter serial>", from, to, Interval.Day);
     
   consumption.ToList()
-    .ForEach(c => Console.WriteLine($"[{c.Start.ToLocalTime()}-{c.End.ToLocalTime()}), {c.Quantity:00.00}"));
+    .ForEach(c => Console.WriteLine(
+      $"[{c.Start.ToLocalTime()}-{c.End.ToLocalTime()}), {c.Quantity:00.00}"));
 }
 
 async Task GetAgileRates()
