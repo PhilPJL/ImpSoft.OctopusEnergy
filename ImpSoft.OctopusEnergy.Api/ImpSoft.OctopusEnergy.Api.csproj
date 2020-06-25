@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-preview3</Version>
+    <Version>1.0.0</Version>
     <Authors>Philip Lee</Authors>
     <Company>ImpSoft</Company>
     <Product>Octopus Energy API wrapper</Product>
@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/PhilPJL/ImpSoft.OctopusEnergy</RepositoryUrl>
     <PackageProjectUrl>https://github.com/PhilPJL/ImpSoft.OctopusEnergy</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Octopus-Api, Octopus-Energy, Energy-Consumption, Tariffs</PackageTags>
+    <PackageTags>Octopus-Energy, Octopus-Energy-Api, Energy-Consumption, Tariffs</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageIcon>icon.png</PackageIcon>
