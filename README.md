@@ -8,7 +8,8 @@ async Task GetElectricityConsumption()
 {
   var key = "<APIKEY>";
 
-  // create a private client API with access to electricity and gas consumption
+  // create an authenticated client API with access to electricity and gas consumption
+  // and all public information
   var api = ClientFactory.Create(key);
 
   var from = new DateTimeOffset(2020, 05, 01, 00, 00, 00, TimeSpan.FromHours(1));
@@ -23,6 +24,7 @@ async Task GetElectricityConsumption()
 
 async Task GetAgileRates()
 {
+  // create a non-authenticated client with access to public information only
   var api = ClientFactory.Create();
 	
   // there should be one GSP (in this case '_C')
