@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using ImpSoft.OctopusEnergy.Api.Properties;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -224,12 +226,20 @@ namespace ImpSoft.OctopusEnergy.Api
                     {
                         if (!httpResponse.IsSuccessStatusCode)
                         {
-                            throw new UriGetException(caller, httpResponse, uri);
+                            throw new UriGetException(GetErrorMessage(httpResponse), uri);
                         }
 
                         return JsonConvert.DeserializeObject<TResult>(await httpResponse.Content.ReadAsStringAsync());
                     }
                 }
+            }
+
+            string GetErrorMessage(HttpResponseMessage response)
+            {
+                caller = caller?.StripAsyncSuffix() ?? Resources.UnknownMethod;
+
+                return string.Format(CultureInfo.CurrentCulture,
+                    Resources.HttpRequestFailed, caller, response.StatusCode, response.ReasonPhrase);
             }
         }
     }
