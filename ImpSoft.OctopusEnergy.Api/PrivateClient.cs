@@ -1,9 +1,8 @@
-﻿using ImpSoft.OctopusEnergy.Api;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ImpSoft.OctopusEnergy
+namespace ImpSoft.OctopusEnergy.Api
 {
     internal class PrivateClient : PublicClient, IPrivateClient
     {

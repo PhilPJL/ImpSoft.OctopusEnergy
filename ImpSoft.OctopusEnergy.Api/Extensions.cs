@@ -1,7 +1,7 @@
-﻿using ImpSoft.OctopusEnergy.Api.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ImpSoft.OctopusEnergy.Api.Properties;
 
 namespace ImpSoft.OctopusEnergy.Api
 {
@@ -32,45 +32,33 @@ namespace ImpSoft.OctopusEnergy.Api
         {
             if (gsp.StartsWith("_") && gsp.Length > 1) gsp = gsp.Substring(1);
 
-            if (value.ContainsKey(gsp))
-            {
-                return value[gsp];
-            }
+            if (value.ContainsKey(gsp)) return value[gsp];
 
-            if (value.ContainsKey("_" + gsp))
-            {
-                return value["_" + gsp];
-            }
+            if (value.ContainsKey("_" + gsp)) return value["_" + gsp];
 
-            throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));
+            throw new ArgumentOutOfRangeException(
+                string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));
         }
 
         public static SampleQuotesByPeriod ForGsp(this Dictionary<string, SampleQuotesByPeriod> value, string gsp)
         {
             if (gsp.StartsWith("_") && gsp.Length > 1) gsp = gsp.Substring(1);
 
-            if (value.ContainsKey(gsp))
-            {
-                return value[gsp];
-            }
+            if (value.ContainsKey(gsp)) return value[gsp];
 
-            if (value.ContainsKey("_" + gsp))
-            {
-                return value["_" + gsp];
-            }
+            if (value.ContainsKey("_" + gsp)) return value["_" + gsp];
 
-            throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));
+            throw new ArgumentOutOfRangeException(
+                string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));
         }
 
         internal static string StripAsyncSuffix(this string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return name;
-            }
+            if (string.IsNullOrWhiteSpace(name)) return name;
 
             return name.EndsWith("Async", StringComparison.OrdinalIgnoreCase)
-                ? name.Substring(0, name.Length - 5) : name;
+                ? name.Substring(0, name.Length - 5)
+                : name;
         }
     }
 }

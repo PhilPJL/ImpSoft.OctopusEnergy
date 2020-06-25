@@ -79,6 +79,24 @@ namespace ImpSoft.OctopusEnergy.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The parameter must not be null or empty..
+        /// </summary>
+        internal static string ParameterMustNotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("ParameterMustNotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;The parameter must not be null or whitespace..
+        /// </summary>
+        internal static string ParameterMustNotBeNullOrWhitespace {
+            get {
+                return ResourceManager.GetString("ParameterMustNotBeNullOrWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown method.
         /// </summary>
         internal static string UnknownMethod {

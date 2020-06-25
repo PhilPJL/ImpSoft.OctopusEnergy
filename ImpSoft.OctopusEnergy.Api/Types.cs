@@ -82,8 +82,7 @@ namespace ImpSoft.OctopusEnergy.Api
         [DataMember(Name = "single_register_gas_tariffs")]
         public Dictionary<string, TariffsByPeriod> SingleRegisterGasTariffs { get; set; }
 
-        [DataMember(Name = "sample_quotes")]
-        public Dictionary<string, SampleQuotesByPeriod> SampleQuotes { get; set; }
+        [DataMember(Name = "sample_quotes")] public Dictionary<string, SampleQuotesByPeriod> SampleQuotes { get; set; }
 
         [DataMember(Name = "sample_consumption")]
         public SampleConsumptionByRate SampleConsumption { get; set; }
@@ -92,18 +91,30 @@ namespace ImpSoft.OctopusEnergy.Api
     [DataContract(Name = "")]
     public class SampleConsumptionByRate
     {
-        [DataMember(Name = "electricity_single_rate")] public SampleConsumption ElectricitySingleRate { get; set; }
-        [DataMember(Name = "electricity_dual_rate")] public SampleConsumption ElectricityDualRate { get; set; }
-        [DataMember(Name = "dual_fuel_single_rate")] public SampleConsumption DualFuelSingleRate { get; set; }
-        [DataMember(Name = "dual_fuel_dual_rate")] public SampleConsumption DualFuelDualRate { get; set; }
+        [DataMember(Name = "electricity_single_rate")]
+        public SampleConsumption ElectricitySingleRate { get; set; }
+
+        [DataMember(Name = "electricity_dual_rate")]
+        public SampleConsumption ElectricityDualRate { get; set; }
+
+        [DataMember(Name = "dual_fuel_single_rate")]
+        public SampleConsumption DualFuelSingleRate { get; set; }
+
+        [DataMember(Name = "dual_fuel_dual_rate")]
+        public SampleConsumption DualFuelDualRate { get; set; }
     }
 
     [DataContract(Name = "")]
     public class SampleConsumption
     {
-        [DataMember(Name = "electricity_standard")] public decimal? ElectricityStandard { get; set; }
+        [DataMember(Name = "electricity_standard")]
+        public decimal? ElectricityStandard { get; set; }
+
         [DataMember(Name = "electricity_day")] public decimal? ElectricityDay { get; set; }
-        [DataMember(Name = "electricity_night")] public decimal? ElectricityNight { get; set; }
+
+        [DataMember(Name = "electricity_night")]
+        public decimal? ElectricityNight { get; set; }
+
         [DataMember(Name = "gas_standard")] public decimal? GasStandard { get; set; }
     }
 
@@ -196,8 +207,11 @@ namespace ImpSoft.OctopusEnergy.Api
     [DataContract(Name = "")]
     public class SampleQuote
     {
-        [DataMember(Name = "annual_cost_inc_vat")] public decimal? AnnualCostIncVAT { get; set; }
-        [DataMember(Name = "annual_cost_exc_vat")] public decimal? AnnualCostExcVAT { get; set; }
+        [DataMember(Name = "annual_cost_inc_vat")]
+        public decimal? AnnualCostIncVAT { get; set; }
+
+        [DataMember(Name = "annual_cost_exc_vat")]
+        public decimal? AnnualCostExcVAT { get; set; }
     }
 
     [DataContract(Name = "")]

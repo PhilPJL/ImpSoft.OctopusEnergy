@@ -1,6 +1,4 @@
-﻿using ImpSoft.OctopusEnergy.Api.Properties;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -11,6 +9,8 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ImpSoft.OctopusEnergy.Api.Properties;
+using Newtonsoft.Json;
 
 namespace ImpSoft.OctopusEnergy.Api
 {
@@ -80,7 +80,8 @@ namespace ImpSoft.OctopusEnergy.Api
             Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-            var uri = new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
+            var uri = new Uri(
+                    $"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
 
@@ -183,7 +184,8 @@ namespace ImpSoft.OctopusEnergy.Api
             return await GetCollectionAsync<Charge>(uri);
         }
 
-        protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri, [CallerMemberName] string caller = null)
+        protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri,
+            [CallerMemberName] string caller = null)
         {
             var results = Enumerable.Empty<TResult>();
 
@@ -225,9 +227,7 @@ namespace ImpSoft.OctopusEnergy.Api
                     using (var httpResponse = await client.GetAsync(uri))
                     {
                         if (!httpResponse.IsSuccessStatusCode)
-                        {
                             throw new UriGetException(GetErrorMessage(httpResponse), uri);
-                        }
 
                         return JsonConvert.DeserializeObject<TResult>(await httpResponse.Content.ReadAsStringAsync());
                     }

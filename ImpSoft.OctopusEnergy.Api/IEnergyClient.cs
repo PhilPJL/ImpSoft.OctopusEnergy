@@ -29,8 +29,8 @@ namespace ImpSoft.OctopusEnergy.Api
         Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(Tariff tariff, DateTimeOffset? from = null,
             DateTimeOffset? to = null);
 
-        Task<IEnumerable<Charge>> GetGasUnitRatesAsync(string productCode, string tariffCode, DateTimeOffset? from = null,
-            DateTimeOffset? to = null);
+        Task<IEnumerable<Charge>> GetGasUnitRatesAsync(string productCode, string tariffCode,
+            DateTimeOffset? from = null, DateTimeOffset? to = null);
 
         Task<IEnumerable<Charge>> GetGasStandingChargesAsync(string productCode, string tariffCode,
             DateTimeOffset? from = null, DateTimeOffset? to = null);

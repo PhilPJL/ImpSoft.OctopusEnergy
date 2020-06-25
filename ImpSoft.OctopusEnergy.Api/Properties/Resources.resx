@@ -123,6 +123,12 @@
   <data name="HttpRequestFailed" xml:space="preserve">
     <value>{0}: the HTTP request failed with status code={1} and reason='{2}'.</value>
   </data>
+  <data name="ParameterMustNotBeNullOrEmpty" xml:space="preserve">
+    <value>The parameter must not be null or empty.</value>
+  </data>
+  <data name="ParameterMustNotBeNullOrWhitespace" xml:space="preserve">
+    <value>"The parameter must not be null or whitespace.</value>
+  </data>
   <data name="UnknownMethod" xml:space="preserve">
     <value>Unknown method</value>
   </data>
