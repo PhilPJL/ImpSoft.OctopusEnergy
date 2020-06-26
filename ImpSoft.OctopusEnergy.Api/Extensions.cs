@@ -9,8 +9,6 @@ namespace ImpSoft.OctopusEnergy.Api
     {
         public static string ToIso8601(this DateTimeOffset value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-
             return $"{value.ToUniversalTime():s}Z";
         }
 
