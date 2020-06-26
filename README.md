@@ -28,7 +28,9 @@ async Task GetAgileRates()
   // create a non-authenticated client with access to public information only
   var api = ClientFactory.Create();
 	
-  // there should be one GSP (in this case '_C')
+  // The api returns a collection of GSPs.  If no postcode is provided all GSPs are returned.
+  // I would expect there should be only one GSP for a valid postcode (in this case '_C')
+  // but I'm not certain on that point.
   var gsp = (await api.GetGridSupplyPointsAsync("SW16 2GY")).SingleOrDefault();
 	
   // alternatively retrieve the GSP using the 'mpan'
