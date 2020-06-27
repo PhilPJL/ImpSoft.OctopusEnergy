@@ -28,11 +28,9 @@ namespace ImpSoft.OctopusEnergy.Api
 
         public static TariffsByPeriod ForGsp(this Dictionary<string, TariffsByPeriod> value, string gsp)
         {
-            if (gsp.StartsWith("_") && gsp.Length > 1) gsp = gsp.Substring(1);
+            Assertions.AssertValidGsp(gsp);
 
             if (value.ContainsKey(gsp)) return value[gsp];
-
-            if (value.ContainsKey("_" + gsp)) return value["_" + gsp];
 
             throw new ArgumentOutOfRangeException(
                 string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));
@@ -40,11 +38,9 @@ namespace ImpSoft.OctopusEnergy.Api
 
         public static SampleQuotesByPeriod ForGsp(this Dictionary<string, SampleQuotesByPeriod> value, string gsp)
         {
-            if (gsp.StartsWith("_") && gsp.Length > 1) gsp = gsp.Substring(1);
+            Assertions.AssertValidGsp(gsp);
 
             if (value.ContainsKey(gsp)) return value[gsp];
-
-            if (value.ContainsKey("_" + gsp)) return value["_" + gsp];
 
             throw new ArgumentOutOfRangeException(
                 string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));

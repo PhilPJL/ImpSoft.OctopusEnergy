@@ -134,46 +134,46 @@ namespace ImpSoft.OctopusEnergy.Api
         [DataMember(Name = "code")] public string Code { get; set; }
 
         [DataMember(Name = "standing_charge_exc_vat")]
-        public decimal StandingChargeExcVAT { get; set; }
+        public decimal StandingChargeExcludingVAT { get; set; }
 
         [DataMember(Name = "standing_charge_inc_vat")]
-        public decimal StandingChargeIncVAT { get; set; }
+        public decimal StandingChargeIncludingVAT { get; set; }
 
         [DataMember(Name = "online_discount_exc_vat")]
-        public decimal OnlineDiscountExcVAT { get; set; }
+        public decimal OnlineDiscountExcludingVAT { get; set; }
 
         [DataMember(Name = "online_discount_inc_vat")]
-        public decimal OnlineDiscountIncVAT { get; set; }
+        public decimal OnlineDiscountIncludingVAT { get; set; }
 
         [DataMember(Name = "dual_fuel_discount_exc_vat")]
-        public decimal DualFuelDiscountExcVAT { get; set; }
+        public decimal DualFuelDiscountExcludingVAT { get; set; }
 
         [DataMember(Name = "dual_fuel_discount_inc_vat")]
-        public decimal DualFuelDiscountIncVAT { get; set; }
+        public decimal DualFuelDiscountIncludingVAT { get; set; }
 
         [DataMember(Name = "exit_fees_exc_vat")]
-        public decimal ExitFeesExcVAT { get; set; }
+        public decimal ExitFeesExcludingVAT { get; set; }
 
         [DataMember(Name = "exit_fees_inc_vat")]
-        public decimal ExitFeesIncVAT { get; set; }
+        public decimal ExitFeesIncludingVAT { get; set; }
 
         [DataMember(Name = "standard_unit_rate_exc_vat")]
-        public decimal? StandardUnitRateExcVAT { get; set; }
+        public decimal? StandardUnitRateExcludingVAT { get; set; }
 
         [DataMember(Name = "standard_unit_rate_inc_vat")]
-        public decimal? StandardUnitRateIncVAT { get; set; }
+        public decimal? StandardUnitRateIncludingVAT { get; set; }
 
         [DataMember(Name = "day_unit_rate_exc_vat")]
-        public decimal? DayUnitRateExcVAT { get; set; }
+        public decimal? DayUnitRateExcludingVAT { get; set; }
 
         [DataMember(Name = "day_unit_rate_inc_vat")]
-        public decimal? DayUnitRateIncVAT { get; set; }
+        public decimal? DayUnitRateIncludingVAT { get; set; }
 
         [DataMember(Name = "night_unit_rate_exc_vat")]
-        public decimal? NightUnitRateExcVAT { get; set; }
+        public decimal? NightUnitRateExcludingVAT { get; set; }
 
         [DataMember(Name = "night_unit_rate_inc_vat")]
-        public decimal? NightUnitRateIncVAT { get; set; }
+        public decimal? NightUnitRateIncludingVAT { get; set; }
 
         [DataMember(Name = "links")] public IEnumerable<Link> Links { get; set; }
     }
@@ -208,10 +208,10 @@ namespace ImpSoft.OctopusEnergy.Api
     public class SampleQuote
     {
         [DataMember(Name = "annual_cost_inc_vat")]
-        public decimal? AnnualCostIncVAT { get; set; }
+        public decimal? AnnualCostIncludingVAT { get; set; }
 
         [DataMember(Name = "annual_cost_exc_vat")]
-        public decimal? AnnualCostExcVAT { get; set; }
+        public decimal? AnnualCostExcludingVAT { get; set; }
     }
 
     [DataContract(Name = "")]
@@ -223,7 +223,7 @@ namespace ImpSoft.OctopusEnergy.Api
     }
 
     [DataContract(Name = "")]
-    public class MeterPointGridSupplyPoint
+    internal class MeterPointGridSupplyPoint
     {
         [DataMember(Name = "gsp")] public string GroupId { get; set; }
         [DataMember(Name = "mpan")] public string MPan { get; set; }
@@ -231,9 +231,16 @@ namespace ImpSoft.OctopusEnergy.Api
     }
 
     [DataContract(Name = "")]
-    public class GridSupplyPoint
+    internal class GridSupplyPoint
     {
         [DataMember(Name = "group_id")] public string GroupId { get; set; }
+    }
+
+    public class GridSupplyPointInfo
+    {
+        public string GroupId { get; set; }
+        public string AreaId { get; set; }
+        public string Area { get; set; }
     }
 
     [DataContract(Name = "")]

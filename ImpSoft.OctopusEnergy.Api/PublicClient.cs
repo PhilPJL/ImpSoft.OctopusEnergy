@@ -56,21 +56,71 @@ namespace ImpSoft.OctopusEnergy.Api
             return await GetAsync<ProductDetail>(uri);
         }
 
-        public async Task<IEnumerable<GridSupplyPoint>> GetGridSupplyPointsAsync(string postcode = null)
+        public async Task<string> GetGridSupplyPointByPostcodeAsync(string postcode)
         {
+            Preconditions.IsNotNullOrWhiteSpace(postcode, nameof(postcode));
+
             var uri = new Uri($"{BaseUrl}/v1/industry/grid-supply-points/")
                 .AddQueryParam("postcode", postcode);
 
-            return await GetCollectionAsync<GridSupplyPoint>(uri);
+            var result = await GetCollectionAsync<GridSupplyPoint>(uri);
+
+            if (result == null || !result.Any())
+            {
+                throw new GspException(Resources.NoGspFound);
+            }
+
+            if(result.Count() > 1)
+            {
+                throw new GspException(Resources.MultipleGspFound);
+            }
+
+            var gsp = result.Single().GroupId;
+
+            Assertions.AssertValidGsp(gsp);
+
+            return gsp;
         }
 
-        public async Task<MeterPointGridSupplyPoint> GetGridSupplyPointAsync(string mpan)
+        public async Task<string> GetGridSupplyPointByMpanAsync(string mpan)
         {
             Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
 
             var uriString = $"{BaseUrl}/v1/electricity-meter-points/{mpan}/";
 
-            return await GetAsync<MeterPointGridSupplyPoint>(new Uri(uriString));
+            var result = await GetAsync<MeterPointGridSupplyPoint>(new Uri(uriString));
+
+            if (result == null)
+            {
+                throw new GspException(Resources.NoGspFound);
+            }
+
+            var gsp = result.GroupId;
+
+            Assertions.AssertValidGsp(gsp);
+
+            return gsp;
+        }
+
+        public  IEnumerable<GridSupplyPointInfo> GetGridSupplyPoints()
+        {
+            return new List<GridSupplyPointInfo>
+            {
+                new GridSupplyPointInfo{ GroupId = "_A", AreaId = "10", Area = "East England" },
+                new GridSupplyPointInfo{ GroupId = "_B", AreaId = "11", Area = "East Midlands" },
+                new GridSupplyPointInfo{ GroupId = "_C", AreaId = "12", Area = "London" },
+                new GridSupplyPointInfo{ GroupId = "_D", AreaId = "13", Area = "North Wales, Merseyside and Cheshire" },
+                new GridSupplyPointInfo{ GroupId = "_E", AreaId = "14", Area = "West Midlands" },
+                new GridSupplyPointInfo{ GroupId = "_F", AreaId = "15", Area = "North East England" },
+                new GridSupplyPointInfo{ GroupId = "_G", AreaId = "16", Area = "North West England" },
+                new GridSupplyPointInfo{ GroupId = "_H", AreaId = "17", Area = "North Scotland" },
+                new GridSupplyPointInfo{ GroupId = "_I", AreaId = "18", Area = "South Scotland" },
+                new GridSupplyPointInfo{ GroupId = "_J", AreaId = "19", Area = "South East England" },
+                new GridSupplyPointInfo{ GroupId = "_K", AreaId = "20", Area = "Southern England" },
+                new GridSupplyPointInfo{ GroupId = "_L", AreaId = "21", Area = "South Wales" },
+                new GridSupplyPointInfo{ GroupId = "_M", AreaId = "22", Area = "South West England" },
+                new GridSupplyPointInfo{ GroupId = "_N", AreaId = "23", Area = "Yorkshire" },
+            };
         }
 
         public async Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(string productCode, string tariffCode,
