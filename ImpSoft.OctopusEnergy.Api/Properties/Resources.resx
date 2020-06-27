@@ -123,6 +123,15 @@
   <data name="HttpRequestFailed" xml:space="preserve">
     <value>{0}: the HTTP request failed with status code={1} and reason='{2}'.</value>
   </data>
+  <data name="InvalidGsp" xml:space="preserve">
+    <value>The GSP '{0}' is not in the range _A to _N</value>
+  </data>
+  <data name="MultipleGspFound" xml:space="preserve">
+    <value>More than one GSP found for the supplied post code.</value>
+  </data>
+  <data name="NoGspFound" xml:space="preserve">
+    <value>No GSP found for the supplied post code.</value>
+  </data>
   <data name="ParameterMustNotBeNullOrEmpty" xml:space="preserve">
     <value>The parameter must not be null or empty.</value>
   </data>

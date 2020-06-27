@@ -12,8 +12,9 @@ namespace ImpSoft.OctopusEnergy.Api
             bool? isGreen = null, bool? isTracker = null, bool? isPrepay = null, bool? isBusiness = null);
 
         Task<ProductDetail> GetProductAsync(string productCode, DateTimeOffset? tariffsActiveAt = null);
-        Task<IEnumerable<GridSupplyPoint>> GetGridSupplyPointsAsync(string postcode = null);
-        Task<MeterPointGridSupplyPoint> GetGridSupplyPointAsync(string mpan);
+        Task<string> GetGridSupplyPointByPostcodeAsync(string postcode);
+        Task<string> GetGridSupplyPointByMpanAsync(string mpan);
+        IEnumerable<GridSupplyPointInfo> GetGridSupplyPoints();
 
         Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(string productCode, string tariffCode,
             ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,

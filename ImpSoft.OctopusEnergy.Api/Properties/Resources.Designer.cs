@@ -79,6 +79,33 @@ namespace ImpSoft.OctopusEnergy.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The GSP &apos;{0}&apos; is not in the range _A to _N.
+        /// </summary>
+        internal static string InvalidGsp {
+            get {
+                return ResourceManager.GetString("InvalidGsp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More than one GSP found for the supplied post code..
+        /// </summary>
+        internal static string MultipleGspFound {
+            get {
+                return ResourceManager.GetString("MultipleGspFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No GSP found for the supplied post code..
+        /// </summary>
+        internal static string NoGspFound {
+            get {
+                return ResourceManager.GetString("NoGspFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter must not be null or empty..
         /// </summary>
         internal static string ParameterMustNotBeNullOrEmpty {
