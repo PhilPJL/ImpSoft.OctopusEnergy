@@ -28,24 +28,21 @@ async Task GetAgileRates()
   // create a non-authenticated client with access to public information only
   var api = ClientFactory.Create();
 	
-  // The api returns a collection of GSPs.  If no postcode is provided all GSPs are returned.
-  // I would expect there should be only one GSP for a valid postcode (in this case '_C')
-  // but I'm not certain that's guaranteed.
-  var gsp = (await api.GetGridSupplyPointsAsync("SW16 2GY")).SingleOrDefault();
+  // Retrieve GSP for postcode.  If 0 or >1 GSP found an exception will be thrown.
+  var gsp = (await api.GetGridSupplyPointByPostcodeAsync("SW16 2GY"));
 	
-  // alternatively retrieve the GSP using the 'mpan'
-  //var gsp = await api.GetGridSupplyPointAsync("<mpan>");
-	
-  if(gsp == null){
-    // handle error
-  }
+  // Alternatively retrieve the GSP using the 'mpan'.
+  //var gsp = await api.GetGridSupplyPointByMpanAsync("<mpan>");
 	
   // the current agile tariff
   var productCode = "AGILE-18-02-21";
   var agile = await api.GetProductAsync(productCode);
 
   // get the tariff for GSP _C
-  var tariffCode = agile.SingleRegisterElectricityTariffs.ForGsp(gsp.GroupId).Monthly.Code;
+  var tariffCode = agile.SingleRegisterElectricityTariffs.ForGsp(gsp).Monthly.Code;
+
+  // get sample quote info
+  var quote = agile.SampleQuotes.ForGsp(gsp);
 
   var from = new DateTimeOffset(2020, 03, 12, 00, 00, 00, TimeSpan.FromHours(0));
   var to = new DateTimeOffset(2020, 03, 12, 23, 59, 00, TimeSpan.FromHours(0));
