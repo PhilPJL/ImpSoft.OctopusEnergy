@@ -16,20 +16,24 @@ namespace ImpSoft.OctopusEnergy.Api
 {
     internal class PublicClient : IPublicClient
     {
-        public PublicClient()
+        private bool? EnableAutomaticCompression { get; }
+
+        public PublicClient(bool? enableAutomaticCompression)
         {
             AuthenticationHeader = null;
+            EnableAutomaticCompression = enableAutomaticCompression;
         }
 
-        protected PublicClient(string apiKey)
+        protected PublicClient(string apiKey, bool? enableAutomaticCompression)
         {
             AuthenticationHeader =
                 new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
+            EnableAutomaticCompression = enableAutomaticCompression;
         }
 
         private AuthenticationHeaderValue AuthenticationHeader { get; }
 
-        public string BaseUrl { get; } = "https://api.octopus.energy";
+        public string BaseUrl { get; } = ClientFactory.BaseUrl;
 
         public async Task<IEnumerable<Product>> GetProductsAsync(
             DateTimeOffset? availableAt = null, bool? isVariable = null, bool? isGreen = null, bool? isTracker = null,
@@ -263,11 +267,14 @@ namespace ImpSoft.OctopusEnergy.Api
 
             using (var handler = new HttpClientHandler())
             {
+                if (EnableAutomaticCompression.HasValue)
+                {
 #if NETCOREAPP
-                handler.AutomaticDecompression = DecompressionMethods.All;
+                    handler.AutomaticDecompression = EnableAutomaticCompression.Value ? DecompressionMethods.All : DecompressionMethods.None;
 #else
-                handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                    handler.AutomaticDecompression = EnableAutomaticCompression.Value ? DecompressionMethods.GZip | DecompressionMethods.Deflate : DecompressionMethods.None;
 #endif
+                }
 
                 using (var client = new HttpClient(handler))
                 {

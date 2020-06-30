@@ -6,7 +6,7 @@ namespace ImpSoft.OctopusEnergy.Api
 {
     internal class PrivateClient : PublicClient, IPrivateClient
     {
-        public PrivateClient(string apiKey) : base(apiKey)
+        public PrivateClient(string apiKey, bool? enableAutomaticCompression) : base(apiKey, enableAutomaticCompression)
         {
         }
 
