@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -14,26 +13,16 @@ using Newtonsoft.Json;
 
 namespace ImpSoft.OctopusEnergy.Api
 {
-    internal class PublicClient : IPublicClient
+    public class OctopusEnergyClient : IOctopusEnergyClient
     {
-        private bool? EnableAutomaticCompression { get; }
-
-        public PublicClient(bool? enableAutomaticCompression)
+        public OctopusEnergyClient(HttpClient client)
         {
-            AuthenticationHeader = null;
-            EnableAutomaticCompression = enableAutomaticCompression;
+            Preconditions.IsNotNull(client, nameof(client));
+
+            Client = client;
         }
 
-        protected PublicClient(string apiKey, bool? enableAutomaticCompression)
-        {
-            AuthenticationHeader =
-                new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
-            EnableAutomaticCompression = enableAutomaticCompression;
-        }
-
-        private AuthenticationHeaderValue AuthenticationHeader { get; }
-
-        public string BaseUrl { get; } = ClientFactory.BaseUrl;
+        public static string BaseUrl { get; } = "https://api.octopus.energy";
 
         public async Task<IEnumerable<Product>> GetProductsAsync(
             DateTimeOffset? availableAt = null, bool? isVariable = null, bool? isGreen = null, bool? isTracker = null,
@@ -74,7 +63,7 @@ namespace ImpSoft.OctopusEnergy.Api
                 throw new GspException(Resources.NoGspFound);
             }
 
-            if(result.Count() > 1)
+            if (result.Count() > 1)
             {
                 throw new GspException(Resources.MultipleGspFound);
             }
@@ -106,7 +95,7 @@ namespace ImpSoft.OctopusEnergy.Api
             return gsp;
         }
 
-        public  IEnumerable<GridSupplyPointInfo> GetGridSupplyPoints()
+        public IEnumerable<GridSupplyPointInfo> GetGridSupplyPoints()
         {
             return new List<GridSupplyPointInfo>
             {
@@ -238,7 +227,40 @@ namespace ImpSoft.OctopusEnergy.Api
             return await GetCollectionAsync<Charge>(uri);
         }
 
-        protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri,
+        private int PageSize { get; } = 65000;
+        public HttpClient Client { get; }
+
+        public async Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
+            DateTimeOffset from, DateTimeOffset to, Interval interval = Interval.Default)
+        {
+            Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
+            Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
+
+            var uri = new Uri($"{BaseUrl}/v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
+                .AddQueryParam(interval)
+                .AddQueryParam("page_size", PageSize)
+                .AddQueryParam("period_from", from)
+                .AddQueryParam("period_to", to);
+
+            return await GetCollectionAsync<Consumption>(uri, apiKey);
+        }
+
+        public async Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string apiKey, string mprn, string serialNumber,
+            DateTimeOffset from, DateTimeOffset to, Interval interval = Interval.Default)
+        {
+            Preconditions.IsNotNullOrWhiteSpace(mprn, nameof(mprn));
+            Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
+
+            var uri = new Uri($"{BaseUrl}/v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
+                .AddQueryParam(interval)
+                .AddQueryParam("page_size", PageSize)
+                .AddQueryParam("period_from", from)
+                .AddQueryParam("period_to", to);
+
+            return await GetCollectionAsync<Consumption>(uri, apiKey);
+        }
+
+        protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri, string apiKey = null,
             [CallerMemberName] string caller = null)
         {
             var results = Enumerable.Empty<TResult>();
@@ -249,7 +271,7 @@ namespace ImpSoft.OctopusEnergy.Api
             {
                 pages++;
 
-                var response = await GetAsync<PagedResults<TResult>>(uri, caller);
+                var response = await GetAsync<PagedResults<TResult>>(uri, apiKey, caller);
 
                 results = results.Concat(response.Results ?? Enumerable.Empty<TResult>());
 
@@ -261,34 +283,27 @@ namespace ImpSoft.OctopusEnergy.Api
             return results;
         }
 
-        private async Task<TResult> GetAsync<TResult>(Uri uri, [CallerMemberName] string caller = null)
+        private async Task<TResult> GetAsync<TResult>(Uri uri, string apiKey = null, [CallerMemberName] string caller = null)
         {
             Debug.WriteLine(uri.ToString());
 
-            using (var handler = new HttpClientHandler())
+            var request = new HttpRequestMessage
             {
-                if (EnableAutomaticCompression.HasValue)
-                {
-#if NETCOREAPP
-                    handler.AutomaticDecompression = EnableAutomaticCompression.Value ? DecompressionMethods.All : DecompressionMethods.None;
-#else
-                    handler.AutomaticDecompression = EnableAutomaticCompression.Value ? DecompressionMethods.GZip | DecompressionMethods.Deflate : DecompressionMethods.None;
-#endif
-                }
+                Method = HttpMethod.Get,
+                RequestUri = uri
+            };
 
-                using (var client = new HttpClient(handler))
-                {
-                    client.DefaultRequestHeaders.Authorization = AuthenticationHeader;
-                    client.BaseAddress = uri;
+            if (!string.IsNullOrEmpty(apiKey))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
+            }
 
-                    using (var httpResponse = await client.GetAsync(uri))
-                    {
-                        if (!httpResponse.IsSuccessStatusCode)
-                            throw new UriGetException(GetErrorMessage(httpResponse), uri);
+            using (var httpResponse = await Client.SendAsync(request))
+            {
+                if (!httpResponse.IsSuccessStatusCode)
+                    throw new UriGetException(GetErrorMessage(httpResponse), uri);
 
-                        return JsonConvert.DeserializeObject<TResult>(await httpResponse.Content.ReadAsStringAsync());
-                    }
-                }
+                return JsonConvert.DeserializeObject<TResult>(await httpResponse.Content.ReadAsStringAsync());
             }
 
             string GetErrorMessage(HttpResponseMessage response)
