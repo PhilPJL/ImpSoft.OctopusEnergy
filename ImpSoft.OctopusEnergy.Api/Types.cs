@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("ImpSoft.OctopusEnergy.Api.Tests")]
 
 namespace ImpSoft.OctopusEnergy.Api
 {
