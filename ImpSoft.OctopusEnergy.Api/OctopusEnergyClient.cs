@@ -5,11 +5,11 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ImpSoft.OctopusEnergy.Api.Properties;
-using Newtonsoft.Json;
 
 namespace ImpSoft.OctopusEnergy.Api
 {
@@ -282,7 +282,7 @@ namespace ImpSoft.OctopusEnergy.Api
                 if (!httpResponse.IsSuccessStatusCode)
                     throw new UriGetException(GetErrorMessage(httpResponse), uri);
 
-                return JsonConvert.DeserializeObject<TResult>(await httpResponse.Content.ReadAsStringAsync());
+                 return await httpResponse.Content.ReadFromJsonAsync<TResult>();
             }
 
             string GetErrorMessage(HttpResponseMessage response)

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
         {
             Preconditions.IsNotNull(response, nameof(response));
             AutomaticDecompression = System.Net.DecompressionMethods.All;
-            Response = response;
+            ResponseObject = response;
             ExpectedRequestUri = expectedUri;
         }
 
@@ -25,7 +25,7 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
             ExpectedRequestUri = expectedUri;
         }
 
-        private TResponse Response { get; }
+        private TResponse ResponseObject { get; }
         private string ResponseString { get; }
         public Uri ExpectedRequestUri { get; }
 
@@ -43,18 +43,13 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
 
             Debug.WriteLine(ExpectedRequestUri.AbsoluteUri);
 
-            if (Response != null)
-            {
-                return new HttpResponseMessage
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(Response))
-                };
-            }
+            var httpResponse = ResponseObject != null
+                ? new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(ResponseObject)) }
+                : new HttpResponseMessage { Content = new StringContent(ResponseString) };
 
-            return new HttpResponseMessage
-            {
-                Content = new StringContent(ResponseString)
-            };
+            httpResponse.Content.Headers.ContentType.MediaType = "application/json";
+
+            return httpResponse;
         }
     }
 }

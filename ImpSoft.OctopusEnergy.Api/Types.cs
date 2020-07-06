@@ -1,24 +1,25 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
+
 [assembly: InternalsVisibleTo("ImpSoft.OctopusEnergy.Api.Tests")]
 
 namespace ImpSoft.OctopusEnergy.Api
 {
     public class PagedResults<TResult>
     {
-        [JsonProperty("count")] public int Count { get; set; }
-        [JsonProperty("next")] public string Next { get; set; }
-        [JsonProperty("previous")] public string Previous { get; set; }
-        [JsonProperty("results")] public IEnumerable<TResult> Results { get; set; }
+        [JsonPropertyName("count")] public int Count { get; set; }
+        [JsonPropertyName("next")] public string Next { get; set; }
+        [JsonPropertyName("previous")] public string Previous { get; set; }
+        [JsonPropertyName("results")] public IEnumerable<TResult> Results { get; set; }
     }
 
     public class Consumption
     {
-        [JsonProperty("consumption")] public decimal Quantity { get; set; }
-        [JsonProperty("interval_start")] public DateTimeOffset Start { get; set; }
-        [JsonProperty("interval_end")] public DateTimeOffset End { get; set; }
+        [JsonPropertyName("consumption")] public decimal Quantity { get; set; }
+        [JsonPropertyName("interval_start")] public DateTimeOffset Start { get; set; }
+        [JsonPropertyName("interval_end")] public DateTimeOffset End { get; set; }
     }
 
 #pragma warning disable CA1027 // Mark enums with FlagsAttribute
@@ -43,185 +44,185 @@ namespace ImpSoft.OctopusEnergy.Api
 
     public class ProductBase
     {
-        [JsonProperty("code")] public string Code { get; set; }
-        [JsonProperty("full_name")] public string FullName { get; set; }
-        [JsonProperty("display_name")] public string DisplayName { get; set; }
-        [JsonProperty("description")] public string Description { get; set; }
-        [JsonProperty("is_variable")] public bool IsVariable { get; set; }
-        [JsonProperty("is_green")] public bool IsGreen { get; set; }
-        [JsonProperty("is_tracker")] public bool IsTracker { get; set; }
-        [JsonProperty("is_prepay")] public bool IsPrepay { get; set; }
-        [JsonProperty("is_business")] public bool IsBusiness { get; set; }
-        [JsonProperty("is_restricted")] public bool IsRestricted { get; set; }
-        [JsonProperty("term")] public int? Term { get; set; }
-        [JsonProperty("brand")] public string Brand { get; set; }
-        [JsonProperty("available_from")] public DateTimeOffset AvailableFrom { get; set; }
-        [JsonProperty("available_to")] public DateTimeOffset? AvailableTo { get; set; }
+        [JsonPropertyName("code")] public string Code { get; set; }
+        [JsonPropertyName("full_name")] public string FullName { get; set; }
+        [JsonPropertyName("display_name")] public string DisplayName { get; set; }
+        [JsonPropertyName("description")] public string Description { get; set; }
+        [JsonPropertyName("is_variable")] public bool IsVariable { get; set; }
+        [JsonPropertyName("is_green")] public bool IsGreen { get; set; }
+        [JsonPropertyName("is_tracker")] public bool IsTracker { get; set; }
+        [JsonPropertyName("is_prepay")] public bool IsPrepay { get; set; }
+        [JsonPropertyName("is_business")] public bool IsBusiness { get; set; }
+        [JsonPropertyName("is_restricted")] public bool IsRestricted { get; set; }
+        [JsonPropertyName("term")] public int? Term { get; set; }
+        [JsonPropertyName("brand")] public string Brand { get; set; }
+        [JsonPropertyName("available_from")] public DateTimeOffset AvailableFrom { get; set; }
+        [JsonPropertyName("available_to")] public DateTimeOffset? AvailableTo { get; set; }
 
-        [JsonProperty("links")] public IEnumerable<Link> Links { get; set; }
+        [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; }
     }
 
     public class Product : ProductBase
     {
-        [JsonProperty("direction")] public string Direction { get; set; }
+        [JsonPropertyName("direction")] public string Direction { get; set; }
     }
 
     public class ProductDetail : ProductBase
     {
-        [JsonProperty("tariffs_active_at")]
+        [JsonPropertyName("tariffs_active_at")]
         public DateTimeOffset ActiveAt { get; set; }
 
-        [JsonProperty("single_register_electricity_tariffs")]
+        [JsonPropertyName("single_register_electricity_tariffs")]
         public Dictionary<string, TariffsByPeriod> SingleRegisterElectricityTariffs { get; set; }
 
-        [JsonProperty("dual_register_electricity_tariffs")]
+        [JsonPropertyName("dual_register_electricity_tariffs")]
         public Dictionary<string, TariffsByPeriod> DualRegisterElectricityTariffs { get; set; }
 
-        [JsonProperty("single_register_gas_tariffs")]
+        [JsonPropertyName("single_register_gas_tariffs")]
         public Dictionary<string, TariffsByPeriod> SingleRegisterGasTariffs { get; set; }
 
-        [JsonProperty("sample_quotes")] public Dictionary<string, SampleQuotesByPeriod> SampleQuotes { get; set; }
+        [JsonPropertyName("sample_quotes")] public Dictionary<string, SampleQuotesByPeriod> SampleQuotes { get; set; }
 
-        [JsonProperty("sample_consumption")]
+        [JsonPropertyName("sample_consumption")]
         public SampleConsumptionByRate SampleConsumption { get; set; }
     }
 
     public class SampleConsumptionByRate
     {
-        [JsonProperty("electricity_single_rate")]
+        [JsonPropertyName("electricity_single_rate")]
         public SampleConsumption ElectricitySingleRate { get; set; }
 
-        [JsonProperty("electricity_dual_rate")]
+        [JsonPropertyName("electricity_dual_rate")]
         public SampleConsumption ElectricityDualRate { get; set; }
 
-        [JsonProperty("dual_fuel_single_rate")]
+        [JsonPropertyName("dual_fuel_single_rate")]
         public SampleConsumption DualFuelSingleRate { get; set; }
 
-        [JsonProperty("dual_fuel_dual_rate")]
+        [JsonPropertyName("dual_fuel_dual_rate")]
         public SampleConsumption DualFuelDualRate { get; set; }
     }
 
     public class SampleConsumption
     {
-        [JsonProperty("electricity_standard")]
+        [JsonPropertyName("electricity_standard")]
         public decimal? ElectricityStandard { get; set; }
 
-        [JsonProperty("electricity_day")] public decimal? ElectricityDay { get; set; }
+        [JsonPropertyName("electricity_day")] public decimal? ElectricityDay { get; set; }
 
-        [JsonProperty("electricity_night")]
+        [JsonPropertyName("electricity_night")]
         public decimal? ElectricityNight { get; set; }
 
-        [JsonProperty("gas_standard")] public decimal? GasStandard { get; set; }
+        [JsonPropertyName("gas_standard")] public decimal? GasStandard { get; set; }
     }
 
     public class TariffsByPeriod
     {
-        [JsonProperty("direct_debit_monthly")]
+        [JsonPropertyName("direct_debit_monthly")]
         public Tariff Monthly { get; set; }
 
-        [JsonProperty("direct_debit_quarterly")]
+        [JsonPropertyName("direct_debit_quarterly")]
         public Tariff Quarterly { get; set; }
     }
 
     public class Tariff
     {
-        [JsonProperty("code")] public string Code { get; set; }
+        [JsonPropertyName("code")] public string Code { get; set; }
 
-        [JsonProperty("standing_charge_exc_vat")]
+        [JsonPropertyName("standing_charge_exc_vat")]
         public decimal StandingChargeExcludingVAT { get; set; }
 
-        [JsonProperty("standing_charge_inc_vat")]
+        [JsonPropertyName("standing_charge_inc_vat")]
         public decimal StandingChargeIncludingVAT { get; set; }
 
-        [JsonProperty("online_discount_exc_vat")]
+        [JsonPropertyName("online_discount_exc_vat")]
         public decimal OnlineDiscountExcludingVAT { get; set; }
 
-        [JsonProperty("online_discount_inc_vat")]
+        [JsonPropertyName("online_discount_inc_vat")]
         public decimal OnlineDiscountIncludingVAT { get; set; }
 
-        [JsonProperty("dual_fuel_discount_exc_vat")]
+        [JsonPropertyName("dual_fuel_discount_exc_vat")]
         public decimal DualFuelDiscountExcludingVAT { get; set; }
 
-        [JsonProperty("dual_fuel_discount_inc_vat")]
+        [JsonPropertyName("dual_fuel_discount_inc_vat")]
         public decimal DualFuelDiscountIncludingVAT { get; set; }
 
-        [JsonProperty("exit_fees_exc_vat")]
+        [JsonPropertyName("exit_fees_exc_vat")]
         public decimal ExitFeesExcludingVAT { get; set; }
 
-        [JsonProperty("exit_fees_inc_vat")]
+        [JsonPropertyName("exit_fees_inc_vat")]
         public decimal ExitFeesIncludingVAT { get; set; }
 
-        [JsonProperty("standard_unit_rate_exc_vat")]
+        [JsonPropertyName("standard_unit_rate_exc_vat")]
         public decimal? StandardUnitRateExcludingVAT { get; set; }
 
-        [JsonProperty("standard_unit_rate_inc_vat")]
+        [JsonPropertyName("standard_unit_rate_inc_vat")]
         public decimal? StandardUnitRateIncludingVAT { get; set; }
 
-        [JsonProperty("day_unit_rate_exc_vat")]
+        [JsonPropertyName("day_unit_rate_exc_vat")]
         public decimal? DayUnitRateExcludingVAT { get; set; }
 
-        [JsonProperty("day_unit_rate_inc_vat")]
+        [JsonPropertyName("day_unit_rate_inc_vat")]
         public decimal? DayUnitRateIncludingVAT { get; set; }
 
-        [JsonProperty("night_unit_rate_exc_vat")]
+        [JsonPropertyName("night_unit_rate_exc_vat")]
         public decimal? NightUnitRateExcludingVAT { get; set; }
 
-        [JsonProperty("night_unit_rate_inc_vat")]
+        [JsonPropertyName("night_unit_rate_inc_vat")]
         public decimal? NightUnitRateIncludingVAT { get; set; }
 
-        [JsonProperty("links")] public IEnumerable<Link> Links { get; set; }
+        [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; }
     }
 
     public class SampleQuotesByPeriod
     {
-        [JsonProperty("direct_debit_monthly")]
+        [JsonPropertyName("direct_debit_monthly")]
         public SampleQuotes Monthly { get; set; }
 
-        [JsonProperty("direct_debit_quarterly")]
+        [JsonPropertyName("direct_debit_quarterly")]
         public SampleQuotes Quarterly { get; set; }
     }
 
     public class SampleQuotes
     {
-        [JsonProperty("electricity_single_rate")]
+        [JsonPropertyName("electricity_single_rate")]
         public SampleQuote ElectricitySingleRate { get; set; }
 
-        [JsonProperty("electricity_dual_rate")]
+        [JsonPropertyName("electricity_dual_rate")]
         public SampleQuote ElectricityDualRate { get; set; }
 
-        [JsonProperty("dual_fuel_single_rate")]
+        [JsonPropertyName("dual_fuel_single_rate")]
         public SampleQuote DualFuelSingleRate { get; set; }
 
-        [JsonProperty("dual_fuel_dual_rate")]
+        [JsonPropertyName("dual_fuel_dual_rate")]
         public SampleQuote DualFuelDualRate { get; set; }
     }
 
     public class SampleQuote
     {
-        [JsonProperty("annual_cost_inc_vat")]
+        [JsonPropertyName("annual_cost_inc_vat")]
         public decimal? AnnualCostIncludingVAT { get; set; }
 
-        [JsonProperty("annual_cost_exc_vat")]
+        [JsonPropertyName("annual_cost_exc_vat")]
         public decimal? AnnualCostExcludingVAT { get; set; }
     }
 
     public class Link
     {
-        [JsonProperty("href")] public string HRef { get; set; }
-        [JsonProperty("method")] public string Method { get; set; }
-        [JsonProperty("rel")] public string Rel { get; set; }
+        [JsonPropertyName("href")] public string HRef { get; set; }
+        [JsonPropertyName("method")] public string Method { get; set; }
+        [JsonPropertyName("rel")] public string Rel { get; set; }
     }
 
     internal class MeterPointGridSupplyPoint
     {
-        [JsonProperty("gsp")] public string GroupId { get; set; }
-        [JsonProperty("mpan")] public string MPan { get; set; }
-        [JsonProperty("profile_class")] public int ProfileClass { get; set; }
+        [JsonPropertyName("gsp")] public string GroupId { get; set; }
+        [JsonPropertyName("mpan")] public string MPan { get; set; }
+        [JsonPropertyName("profile_class")] public int ProfileClass { get; set; }
     }
 
     internal class GridSupplyPoint
     {
-        [JsonProperty("group_id")] public string GroupId { get; set; }
+        [JsonPropertyName("group_id")] public string GroupId { get; set; }
     }
 
     public class GridSupplyPointInfo
@@ -254,10 +255,10 @@ namespace ImpSoft.OctopusEnergy.Api
 
     public class Charge
     {
-        [JsonProperty("value_exc_vat")] public decimal ValueExcludingVAT { get; set; }
-        [JsonProperty("value_inc_vat")] public decimal ValueIncludingVAT { get; set; }
-        [JsonProperty("valid_from")] public DateTimeOffset? ValidFrom { get; set; }
-        [JsonProperty("valid_to")] public DateTimeOffset? ValidTo { get; set; }
+        [JsonPropertyName("value_exc_vat")] public decimal ValueExcludingVAT { get; set; }
+        [JsonPropertyName("value_inc_vat")] public decimal ValueIncludingVAT { get; set; }
+        [JsonPropertyName("valid_from")] public DateTimeOffset? ValidFrom { get; set; }
+        [JsonPropertyName("valid_to")] public DateTimeOffset? ValidTo { get; set; }
 
         public DateTimeOffset ValidFromUTC => ValidFrom?.ToUniversalTime() ?? DateTimeOffset.MinValue;
         public DateTimeOffset ValidToUTC => ValidTo?.ToUniversalTime() ?? DateTimeOffset.MaxValue;
