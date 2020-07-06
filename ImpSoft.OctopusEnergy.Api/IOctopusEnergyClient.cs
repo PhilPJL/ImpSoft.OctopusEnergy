@@ -12,7 +12,6 @@ namespace ImpSoft.OctopusEnergy.Api
         Task<ProductDetail> GetProductAsync(string productCode, DateTimeOffset? tariffsActiveAt = null);
         Task<string> GetGridSupplyPointByPostcodeAsync(string postcode);
         Task<string> GetGridSupplyPointByMpanAsync(string mpan);
-        IEnumerable<GridSupplyPointInfo> GetGridSupplyPoints();
 
         Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(string productCode, string tariffCode,
             ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,

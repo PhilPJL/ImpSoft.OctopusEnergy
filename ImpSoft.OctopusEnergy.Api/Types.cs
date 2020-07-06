@@ -229,6 +229,27 @@ namespace ImpSoft.OctopusEnergy.Api
         public string GroupId { get; set; }
         public string AreaId { get; set; }
         public string Area { get; set; }
+
+        public static IEnumerable<GridSupplyPointInfo> GetAll()
+        {
+            return new List<GridSupplyPointInfo>
+            {
+                new GridSupplyPointInfo{ GroupId = "_A", AreaId = "10", Area = "East England" },
+                new GridSupplyPointInfo{ GroupId = "_B", AreaId = "11", Area = "East Midlands" },
+                new GridSupplyPointInfo{ GroupId = "_C", AreaId = "12", Area = "London" },
+                new GridSupplyPointInfo{ GroupId = "_D", AreaId = "13", Area = "North Wales, Merseyside and Cheshire" },
+                new GridSupplyPointInfo{ GroupId = "_E", AreaId = "14", Area = "West Midlands" },
+                new GridSupplyPointInfo{ GroupId = "_F", AreaId = "15", Area = "North East England" },
+                new GridSupplyPointInfo{ GroupId = "_G", AreaId = "16", Area = "North West England" },
+                new GridSupplyPointInfo{ GroupId = "_H", AreaId = "17", Area = "North Scotland" },
+                new GridSupplyPointInfo{ GroupId = "_I", AreaId = "18", Area = "South Scotland" },
+                new GridSupplyPointInfo{ GroupId = "_J", AreaId = "19", Area = "South East England" },
+                new GridSupplyPointInfo{ GroupId = "_K", AreaId = "20", Area = "Southern England" },
+                new GridSupplyPointInfo{ GroupId = "_L", AreaId = "21", Area = "South Wales" },
+                new GridSupplyPointInfo{ GroupId = "_M", AreaId = "22", Area = "South West England" },
+                new GridSupplyPointInfo{ GroupId = "_N", AreaId = "23", Area = "Yorkshire" },
+            };
+        }
     }
 
     public class Charge
