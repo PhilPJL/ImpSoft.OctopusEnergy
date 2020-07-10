@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ImpSoft.OctopusEnergy.Api.Properties;
@@ -58,7 +56,9 @@ namespace ImpSoft.OctopusEnergy.Api
 
             var result = await GetCollectionAsync<GridSupplyPoint>(uri);
 
-            if (result == null || !result.Any())
+            Debug.Assert(result != null);
+
+            if (!result.Any())
             {
                 throw new GspException(Resources.NoGspFound);
             }
@@ -83,10 +83,7 @@ namespace ImpSoft.OctopusEnergy.Api
 
             var result = await GetAsync<MeterPointGridSupplyPoint>(new Uri(uriString));
 
-            if (result == null)
-            {
-                throw new GspException(Resources.NoGspFound);
-            }
+            Debug.Assert(result != null);
 
             var gsp = result.GroupId;
 
@@ -239,8 +236,7 @@ namespace ImpSoft.OctopusEnergy.Api
             return await GetCollectionAsync<Consumption>(uri, apiKey);
         }
 
-        protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri, string apiKey = null,
-            [CallerMemberName] string caller = null)
+        protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri, string apiKey = null)
         {
             var results = Enumerable.Empty<TResult>();
 
@@ -250,7 +246,7 @@ namespace ImpSoft.OctopusEnergy.Api
             {
                 pages++;
 
-                var response = await GetAsync<PagedResults<TResult>>(uri, apiKey, caller);
+                var response = await GetAsync<PagedResults<TResult>>(uri, apiKey);
 
                 results = results.Concat(response.Results ?? Enumerable.Empty<TResult>());
 
@@ -262,7 +258,7 @@ namespace ImpSoft.OctopusEnergy.Api
             return results;
         }
 
-        private async Task<TResult> GetAsync<TResult>(Uri uri, string apiKey = null, [CallerMemberName] string caller = null)
+        private async Task<TResult> GetAsync<TResult>(Uri uri, string apiKey = null)
         {
             Debug.WriteLine(uri.ToString());
 
@@ -272,6 +268,9 @@ namespace ImpSoft.OctopusEnergy.Api
                 RequestUri = uri
             };
 
+            // TODO: if the api key was configured in the HttpClientHandler then this method could be reduced to:
+            // await Client.GetFromJsonAsync<TResult>(uri);
+
             if (!string.IsNullOrEmpty(apiKey))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
@@ -279,18 +278,9 @@ namespace ImpSoft.OctopusEnergy.Api
 
             using (var httpResponse = await Client.SendAsync(request))
             {
-                if (!httpResponse.IsSuccessStatusCode)
-                    throw new UriGetException(GetErrorMessage(httpResponse), uri);
+                httpResponse.EnsureSuccessStatusCode();
 
-                 return await httpResponse.Content.ReadFromJsonAsync<TResult>();
-            }
-
-            string GetErrorMessage(HttpResponseMessage response)
-            {
-                caller = caller?.StripAsyncSuffix() ?? Resources.UnknownMethod;
-
-                return string.Format(CultureInfo.CurrentCulture,
-                    Resources.HttpRequestFailed, caller, response.StatusCode, response.ReasonPhrase);
+                return await httpResponse.Content.ReadFromJsonAsync<TResult>();
             }
         }
     }

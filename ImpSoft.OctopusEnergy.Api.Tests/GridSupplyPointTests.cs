@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ImpSoft.OctopusEnergy.Api.Tests
@@ -20,8 +21,9 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
         {
             var client = TestHelper.CreateClient("https://api.octopus.energy/v1/electricity-meter-points/X123456789X/", new MeterPointGridSupplyPoint { GroupId = "A" });
 
-            await Assert.ThrowsExceptionAsync<UriGetException>(async () => await client.GetGridSupplyPointByMpanAsync("123456789"));
+            await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await client.GetGridSupplyPointByMpanAsync("123456789"));
         }
+
 
         [TestMethod]
         public async Task GetGridSupplyPointByPostcodeSucceedsAsync()

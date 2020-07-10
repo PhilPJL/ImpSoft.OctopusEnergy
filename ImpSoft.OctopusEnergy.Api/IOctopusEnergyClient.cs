@@ -8,8 +8,8 @@ namespace ImpSoft.OctopusEnergy.Api
     {
         Task<IEnumerable<Product>> GetProductsAsync(DateTimeOffset? availableAt = null, bool? isVariable = null,
             bool? isGreen = null, bool? isTracker = null, bool? isPrepay = null, bool? isBusiness = null);
-
         Task<ProductDetail> GetProductAsync(string productCode, DateTimeOffset? tariffsActiveAt = null);
+
         Task<string> GetGridSupplyPointByPostcodeAsync(string postcode);
         Task<string> GetGridSupplyPointByMpanAsync(string mpan);
 

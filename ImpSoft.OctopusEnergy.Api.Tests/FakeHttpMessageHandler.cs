@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
@@ -25,6 +26,11 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
             ExpectedRequestUri = expectedUri;
         }
 
+        public FakeHttpMessageHandler(IList<(Uri, TResponse response)> pages)
+        {
+            // TODO: enable faking/testing paged responses
+        }
+
         private TResponse ResponseObject { get; }
         private string ResponseString { get; }
         public Uri ExpectedRequestUri { get; }
@@ -44,8 +50,8 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
             Debug.WriteLine(ExpectedRequestUri.AbsoluteUri);
 
             var httpResponse = ResponseObject != null
-                ? new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(ResponseObject)) }
-                : new HttpResponseMessage { Content = new StringContent(ResponseString) };
+               ? new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(ResponseObject)) }
+               : new HttpResponseMessage { Content = new StringContent(ResponseString) };
 
             httpResponse.Content.Headers.ContentType.MediaType = "application/json";
 
