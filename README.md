@@ -18,13 +18,13 @@ public static async Task Main(string[] args)
 // Example for Blazor Server/ASP .NET core
 public void ConfigureServices(IServiceCollection services)
 {
-	...
-	services.AddHttpClient<IOctopusEnergyClient, OctopusEnergyClient>()
-		.ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler
-		{
-			// AutomaticCompression property not supported on Blazor Wasm
-			AutomaticDecompression = System.Net.DecompressionMethods.All
-		});
+  ...
+  services.AddHttpClient<IOctopusEnergyClient, OctopusEnergyClient>()
+    .ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler
+    {
+      // AutomaticCompression property not supported on Blazor Wasm
+      AutomaticDecompression = System.Net.DecompressionMethods.All
+    });
 }
 
 async Task GetElectricityConsumption(IOctopusEnergyClient client)
