@@ -11,15 +11,15 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
         [TestMethod]
         public async Task GetGridSupplyPointByMpanSucceedsAsync()
         {
-            var client = TestHelper.CreateClient("https://api.octopus.energy/v1/electricity-meter-points/123456789/", new MeterPointGridSupplyPoint { GroupId = "A" });
+            var client = TestHelper.CreateClient("https://api.octopus.energy/v1/electricity-meter-points/123456789/", new MeterPointGridSupplyPoint { GroupId = "_A" });
 
-            Assert.AreEqual("A", await client.GetGridSupplyPointByMpanAsync("123456789"));
+            Assert.AreEqual("_A", await client.GetGridSupplyPointByMpanAsync("123456789"));
         }
 
         [TestMethod]
         public async Task GetGridSupplyPointByMpanThrowsAsync()
         {
-            var client = TestHelper.CreateClient("https://api.octopus.energy/v1/electricity-meter-points/X123456789X/", new MeterPointGridSupplyPoint { GroupId = "A" });
+            var client = TestHelper.CreateClient("https://api.octopus.energy/v1/electricity-meter-points/X123456789X/", new MeterPointGridSupplyPoint { GroupId = "_A" });
 
             await Assert.ThrowsExceptionAsync<HttpRequestException>(async () => await client.GetGridSupplyPointByMpanAsync("123456789"));
         }
@@ -31,10 +31,10 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
             var client = TestHelper.CreateClient("https://api.octopus.energy/v1/industry/grid-supply-points/?postcode=AB12 3XY", new PagedResults<GridSupplyPoint>
             {
                 Count = 1,
-                Results = new List<GridSupplyPoint> { new GridSupplyPoint { GroupId = "A" } }
+                Results = new List<GridSupplyPoint> { new GridSupplyPoint { GroupId = "_A" } }
             });
 
-            Assert.AreEqual("A", await client.GetGridSupplyPointByPostcodeAsync("AB12 3XY"));
+            Assert.AreEqual("_A", await client.GetGridSupplyPointByPostcodeAsync("AB12 3XY"));
         }
 
         [TestMethod]
@@ -50,14 +50,26 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
         }
 
         [TestMethod]
+        public async Task GetGridSupplyPointByPostcodeInvalidGspThrowsAsync()
+        {
+            var client = TestHelper.CreateClient("https://api.octopus.energy/v1/industry/grid-supply-points/?postcode=AB12 3XY", new PagedResults<GridSupplyPoint>
+            {
+                Count = 1,
+                Results = new List<GridSupplyPoint> { new GridSupplyPoint { GroupId = "Z" } }
+            });
+
+            await Assert.ThrowsExceptionAsync<GspException>(async () => await client.GetGridSupplyPointByPostcodeAsync("AB12 3XY"));
+        }
+
+        [TestMethod]
         public async Task GetGridSupplyPointByPostcodeMoreThanOneResultThrowsAsync()
         {
             var client = TestHelper.CreateClient("https://api.octopus.energy/v1/industry/grid-supply-points/?postcode=AB12 3XY", new PagedResults<GridSupplyPoint>
             {
                 Count = 2,
                 Results = new List<GridSupplyPoint> { 
-                    new GridSupplyPoint { GroupId = "A" } ,
-                    new GridSupplyPoint { GroupId = "B" } ,
+                    new GridSupplyPoint { GroupId = "_A" } ,
+                    new GridSupplyPoint { GroupId = "_B" } ,
                 }
             });
 

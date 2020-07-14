@@ -37,7 +37,7 @@ namespace ImpSoft.OctopusEnergy.Api
     {
         public static void AssertValidGsp(string gsp)
         {
-            if (!Regex.IsMatch("_I", @"^_[A-N]$", RegexOptions.Singleline | RegexOptions.Compiled))
+            if (!Regex.IsMatch(gsp, @"^_[A-N]$", RegexOptions.Singleline | RegexOptions.Compiled))
             {
                 throw new GspException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidGsp, gsp));
             }
