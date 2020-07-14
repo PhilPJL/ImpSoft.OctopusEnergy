@@ -26,33 +26,40 @@ namespace ImpSoft.OctopusEnergy.Api
             DateTimeOffset? availableAt = null, bool? isVariable = null, bool? isGreen = null, bool? isTracker = null,
             bool? isPrepay = null, bool? isBusiness = null)
         {
-            var uri = new Uri($"{BaseUrl}/v1/products/")
+            var uri = ComposeGetProductsUri(availableAt, isVariable, isGreen, isTracker, isPrepay, isBusiness);
+
+            return await GetCollectionAsync<Product>(uri);
+        }
+
+        internal static Uri ComposeGetProductsUri(DateTimeOffset? availableAt, bool? isVariable, bool? isGreen, bool? isTracker, bool? isPrepay, bool? isBusiness)
+        {
+            return new Uri($"{BaseUrl}/v1/products/")
                 .AddQueryParam("available_at", availableAt)
                 .AddQueryParam("is_variable", isVariable)
                 .AddQueryParam("is_green", isGreen)
                 .AddQueryParam("is_tracker", isTracker)
                 .AddQueryParam("is_prepay", isPrepay)
                 .AddQueryParam("is_business", isBusiness);
-
-            return await GetCollectionAsync<Product>(uri);
         }
 
         public async Task<ProductDetail> GetProductAsync(string productCode, DateTimeOffset? tariffsActiveAt = null)
         {
-            Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
-
-            var uri = new Uri($"{BaseUrl}/v1/products/{productCode}/")
-                .AddQueryParam("tariffs_active_at ", tariffsActiveAt);
+            var uri = ComposeGetProductUri(productCode, tariffsActiveAt);
 
             return await GetAsync<ProductDetail>(uri);
         }
 
+        internal static Uri ComposeGetProductUri(string productCode, DateTimeOffset? tariffsActiveAt)
+        {
+            Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
+
+            return new Uri($"{BaseUrl}/v1/products/{productCode}/")
+                .AddQueryParam("tariffs_active_at ", tariffsActiveAt);
+        }
+
         public async Task<string> GetGridSupplyPointByPostcodeAsync(string postcode)
         {
-            Preconditions.IsNotNullOrWhiteSpace(postcode, nameof(postcode));
-
-            var uri = new Uri($"{BaseUrl}/v1/industry/grid-supply-points/")
-                .AddQueryParam("postcode", postcode);
+            var uri = ComposeGetGridSupplyPointByPostcodeUri(postcode);
 
             var result = await GetCollectionAsync<GridSupplyPoint>(uri);
 
@@ -75,11 +82,17 @@ namespace ImpSoft.OctopusEnergy.Api
             return gsp;
         }
 
+        internal static Uri ComposeGetGridSupplyPointByPostcodeUri(string postcode)
+        {
+            Preconditions.IsNotNullOrWhiteSpace(postcode, nameof(postcode));
+
+            return new Uri($"{BaseUrl}/v1/industry/grid-supply-points/")
+                .AddQueryParam("postcode", postcode);
+        }
+
         public async Task<string> GetGridSupplyPointByMpanAsync(string mpan)
         {
-            Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
-
-            var uriString = $"{BaseUrl}/v1/electricity-meter-points/{mpan}/";
+            var uriString = ComposeGetGridSupplyPointByMpanUri(mpan);
 
             var result = await GetAsync<MeterPointGridSupplyPoint>(new Uri(uriString));
 
@@ -92,19 +105,28 @@ namespace ImpSoft.OctopusEnergy.Api
             return gsp;
         }
 
+        internal static string ComposeGetGridSupplyPointByMpanUri(string mpan)
+        {
+            Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
+
+            return $"{BaseUrl}/v1/electricity-meter-points/{mpan}/";
+        }
+
         public async Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(string productCode, string tariffCode,
             ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,
             DateTimeOffset? to = null)
         {
+            return await GetCollectionAsync<Charge>(ComposeGetElectricityUnitRatesUri(productCode, tariffCode, rate, from, to));
+        }
+
+        internal static Uri ComposeGetElectricityUnitRatesUri(string productCode, string tariffCode, ElectricityUnitRate rate, DateTimeOffset? from, DateTimeOffset? to)
+        {
             Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-            var uri = new Uri(
-                    $"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
+            return new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Charge>(uri);
 
             string GetRateString()
             {
@@ -118,122 +140,101 @@ namespace ImpSoft.OctopusEnergy.Api
             }
         }
 
-        public async Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(Tariff tariff,
-            ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,
-            DateTimeOffset? to = null)
-        {
-            Preconditions.IsNotNull(tariff, nameof(tariff));
-
-            var link = tariff.Links.SingleOrDefault(l => l.Rel == GetRateString());
-
-            if (link == null)
-                return Enumerable.Empty<Charge>();
-
-            var uri = new Uri(link.HRef)
-                .AddQueryParam("period_from", from)
-                .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Charge>(uri);
-
-            string GetRateString()
-            {
-                switch (rate)
-                {
-                    case ElectricityUnitRate.Standard: return "standard_unit_rates";
-                    case ElectricityUnitRate.Day: return "day_unit_rates";
-                    case ElectricityUnitRate.Night: return "night_unit_rates";
-                    default: throw new ArgumentOutOfRangeException(nameof(rate));
-                }
-            }
-        }
-
         public async Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(string productCode, string tariffCode,
             DateTimeOffset? from = null, DateTimeOffset? to = null)
+        {
+            var uri = ComposeGetElectricityStandingChargesUri(productCode, tariffCode, from, to);
+
+            return await GetCollectionAsync<Charge>(uri);
+        }
+
+        internal static Uri ComposeGetElectricityStandingChargesUri(string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to)
         {
             Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-            var uri = new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/standing-charges/")
+            return new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/standing-charges/")
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Charge>(uri);
         }
 
         public async Task<IEnumerable<Charge>> GetGasUnitRatesAsync(string productCode, string tariffCode,
             DateTimeOffset? from = null, DateTimeOffset? to = null)
         {
+            var uri = ComposeGetGasUnitRatesUri(productCode, tariffCode, from, to);
+
+            return await GetCollectionAsync<Charge>(uri);
+        }
+
+        internal static Uri ComposeGetGasUnitRatesUri(string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to)
+        {
             Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-            var uri = new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standard-unit-rates/")
+            return new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standard-unit-rates/")
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Charge>(uri);
         }
 
         public async Task<IEnumerable<Charge>> GetGasStandingChargesAsync(string productCode, string tariffCode,
             DateTimeOffset? from = null, DateTimeOffset? to = null)
         {
+            var uri = ComposeGetGasStandingChargesUri(productCode, tariffCode, from, to);
+
+            return await GetCollectionAsync<Charge>(uri);
+        }
+
+        internal static Uri ComposeGetGasStandingChargesUri(string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to)
+        {
             Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-            var uri = new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standing-charges/")
+            return new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standing-charges/")
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Charge>(uri);
         }
 
-        public async Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(Tariff tariff,
-            DateTimeOffset? from = null, DateTimeOffset? to = null)
-        {
-            Preconditions.IsNotNull(tariff, nameof(tariff));
-
-            var link = tariff.Links.SingleOrDefault(l => l.Rel == "standing_charges");
-
-            if (link == null)
-                return Enumerable.Empty<Charge>();
-
-            var uri = new Uri(link.HRef)
-                .AddQueryParam("period_from", from)
-                .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Charge>(uri);
-        }
-
-        private int PageSize { get; } = 65000;
+        private static int PageSize { get; } = 65000;
         public HttpClient Client { get; }
 
         public async Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
             DateTimeOffset from, DateTimeOffset to, Interval interval = Interval.Default)
         {
+            var uri = ComposeGetElectricityConsumptionUri(mpan, serialNumber, from, to, interval);
+
+            return await GetCollectionAsync<Consumption>(uri, apiKey);
+        }
+
+        internal static Uri ComposeGetElectricityConsumptionUri(string mpan, string serialNumber, DateTimeOffset from, DateTimeOffset to, Interval interval)
+        {
             Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
             Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
 
-            var uri = new Uri($"{BaseUrl}/v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
+            return new Uri($"{BaseUrl}/v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
                 .AddQueryParam(interval)
                 .AddQueryParam("page_size", PageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Consumption>(uri, apiKey);
         }
 
         public async Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string apiKey, string mprn, string serialNumber,
             DateTimeOffset from, DateTimeOffset to, Interval interval = Interval.Default)
         {
+            var uri = ComposeGetGasConsumptionUri(mprn, serialNumber, from, to, interval);
+
+            return await GetCollectionAsync<Consumption>(uri, apiKey);
+        }
+
+        internal static Uri ComposeGetGasConsumptionUri(string mprn, string serialNumber, DateTimeOffset from, DateTimeOffset to, Interval interval)
+        {
             Preconditions.IsNotNullOrWhiteSpace(mprn, nameof(mprn));
             Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
 
-            var uri = new Uri($"{BaseUrl}/v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
+            return new Uri($"{BaseUrl}/v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
                 .AddQueryParam(interval)
                 .AddQueryParam("page_size", PageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
-
-            return await GetCollectionAsync<Consumption>(uri, apiKey);
         }
 
         protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri uri, string apiKey = null)

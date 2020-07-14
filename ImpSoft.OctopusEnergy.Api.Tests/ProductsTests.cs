@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ImpSoft.OctopusEnergy.Api.Tests
@@ -38,7 +40,9 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
                 // SingleRegisterGasTariffs
             };
 
-            var client = TestHelper.CreateClient($"https://api.octopus.energy/v1/products/{code}/", product);
+            var uri = OctopusEnergyClient.ComposeGetProductUri(code, null);
+
+            var client = TestHelper.CreateClient(uri, product);
 
             var product1 = await client.GetProductAsync(code);
 
@@ -59,6 +63,77 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
             Assert.AreEqual(product.IsTracker, product1.IsTracker);
             Assert.AreEqual(product.IsVariable, product1.IsVariable);
             Assert.AreEqual(product.Term, product1.Term);
+        }
+
+        [TestMethod]
+        public async Task GetProductsSucceedsAsync()
+        {
+            const string code = "P123Z";
+
+            var products = new PagedResults<Product>
+            {
+                Results = new List<Product>{ 
+                    new Product
+                    {
+                        AvailableFrom = DateTimeOffset.Now.AddHours(-10),
+                        AvailableTo = DateTimeOffset.Now.AddYears(1),
+                        Brand = "Brand",
+                        Code = code,
+                        Description = "Description",
+                        DisplayName = "Display name",
+                        FullName = "Full name",
+                        IsBusiness = true,
+                        IsGreen = true,
+                        IsPrepay = true,
+                        IsRestricted = true,
+                        IsTracker = true,
+                        IsVariable = true,
+                        Term = 5,
+                        Direction = "Out"
+
+                        // Links
+                    }
+                },
+                Count = 1,
+                Next = null,
+                Previous = null
+            };
+
+            var uri = OctopusEnergyClient.ComposeGetProductsUri(null, null, null, null, null, null);
+
+            var client = TestHelper.CreateClient(uri, products);
+
+            var products1 = await client.GetProductsAsync();
+
+            var expectedProduct = products.Results.First();
+            var actualProduct = products1.First();
+
+            Assert.AreEqual(expectedProduct.AvailableFrom, actualProduct.AvailableFrom);
+            Assert.AreEqual(expectedProduct.AvailableTo, actualProduct.AvailableTo);
+            Assert.AreEqual(expectedProduct.Brand, actualProduct.Brand);
+            Assert.AreEqual(expectedProduct.Code, actualProduct.Code);
+            Assert.AreEqual(expectedProduct.Description, actualProduct.Description);
+            Assert.AreEqual(expectedProduct.DisplayName, actualProduct.DisplayName);
+            Assert.AreEqual(expectedProduct.FullName, actualProduct.FullName);
+            Assert.AreEqual(expectedProduct.IsBusiness, actualProduct.IsBusiness);
+            Assert.AreEqual(expectedProduct.IsGreen, actualProduct.IsGreen);
+            Assert.AreEqual(expectedProduct.IsPrepay, actualProduct.IsPrepay);
+            Assert.AreEqual(expectedProduct.IsRestricted, actualProduct.IsRestricted);
+            Assert.AreEqual(expectedProduct.IsTracker, actualProduct.IsTracker);
+            Assert.AreEqual(expectedProduct.IsVariable, actualProduct.IsVariable);
+            Assert.AreEqual(expectedProduct.Term, actualProduct.Term);
+        }
+
+        [TestMethod]
+        public void GetProductWithNullProductCodeThrows()
+        {
+            Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri(null, null));
+        }
+
+        [TestMethod]
+        public void GetProductWithEmptyProductCodeThrows()
+        {
+            Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri("    ", null));
         }
     }
 }

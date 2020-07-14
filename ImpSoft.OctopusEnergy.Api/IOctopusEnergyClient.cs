@@ -17,15 +17,8 @@ namespace ImpSoft.OctopusEnergy.Api
             ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,
             DateTimeOffset? to = null);
 
-        Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(Tariff tariff,
-            ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,
-            DateTimeOffset? to = null);
-
         Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(string productCode, string tariffCode,
             DateTimeOffset? from = null, DateTimeOffset? to = null);
-
-        Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(Tariff tariff, DateTimeOffset? from = null,
-            DateTimeOffset? to = null);
 
         Task<IEnumerable<Charge>> GetGasUnitRatesAsync(string productCode, string tariffCode,
             DateTimeOffset? from = null, DateTimeOffset? to = null);
