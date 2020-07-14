@@ -9,10 +9,10 @@ A simple .NET Core and .NET Standard client for the Octopus Energy's API https:/
 // Example for Blazor Wasm
 public static async Task Main(string[] args)
 {
-	...
-	builder.Services.AddHttpClient<IOctopusEnergyClient, OctopusEnergyClient>();
-	...
-	await builder.Build().RunAsync();
+  ...
+  builder.Services.AddHttpClient<IOctopusEnergyClient, OctopusEnergyClient>();
+  ...
+  await builder.Build().RunAsync();
 }
 
 // Example for Blazor Server/ASP .NET core
@@ -44,7 +44,7 @@ async Task GetElectricityConsumption(IOctopusEnergyClient client)
 
 async Task GetAgileRates(IOctopusEnergyClient client)
 {
-  // Retrieve GSP for postcode.  If 0 or >1 GSP found an exception will be thrown.
+  // Retrieve GSP for postcode (in this case "_C".  If 0 or more than 1 GSP is returned an exception will be thrown.
   var gsp = (await api.GetGridSupplyPointByPostcodeAsync("SW16 2GY"));
 	
   // Alternatively retrieve the GSP using the 'mpan'.
