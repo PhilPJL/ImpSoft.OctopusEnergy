@@ -125,6 +125,7 @@ namespace ImpSoft.OctopusEnergy.Api
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
             return new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
+                .AddQueryParam("page_size", MaxTariffsPageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
 
@@ -154,6 +155,7 @@ namespace ImpSoft.OctopusEnergy.Api
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
             return new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/standing-charges/")
+                .AddQueryParam("page_size", MaxTariffsPageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
         }
@@ -172,6 +174,7 @@ namespace ImpSoft.OctopusEnergy.Api
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
             return new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standard-unit-rates/")
+                .AddQueryParam("page_size", MaxTariffsPageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
         }
@@ -190,11 +193,14 @@ namespace ImpSoft.OctopusEnergy.Api
             Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
             return new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standing-charges/")
+                .AddQueryParam("page_size", MaxTariffsPageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
         }
 
-        private static int PageSize { get; } = 65000;
+        private static int MaxConsumptionPageSize { get; } = 65000;
+        private static int MaxTariffsPageSize { get; } = 1500;
+
         public HttpClient Client { get; }
 
         public async Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
@@ -212,7 +218,7 @@ namespace ImpSoft.OctopusEnergy.Api
 
             return new Uri($"{BaseUrl}/v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
                 .AddQueryParam(interval)
-                .AddQueryParam("page_size", PageSize)
+                .AddQueryParam("page_size", MaxConsumptionPageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
         }
@@ -232,7 +238,7 @@ namespace ImpSoft.OctopusEnergy.Api
 
             return new Uri($"{BaseUrl}/v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
                 .AddQueryParam(interval)
-                .AddQueryParam("page_size", PageSize)
+                .AddQueryParam("page_size", MaxConsumptionPageSize)
                 .AddQueryParam("period_from", from)
                 .AddQueryParam("period_to", to);
         }
