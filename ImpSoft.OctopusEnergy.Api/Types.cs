@@ -260,7 +260,7 @@ namespace ImpSoft.OctopusEnergy.Api
         [JsonPropertyName("valid_from")] public DateTimeOffset? ValidFrom { get; set; }
         [JsonPropertyName("valid_to")] public DateTimeOffset? ValidTo { get; set; }
 
-        public DateTimeOffset ValidFromUTC => ValidFrom?.ToUniversalTime() ?? DateTimeOffset.MinValue;
-        public DateTimeOffset ValidToUTC => ValidTo?.ToUniversalTime() ?? DateTimeOffset.MaxValue;
+        [JsonIgnore] public DateTimeOffset ValidFromUTC => ValidFrom?.ToUniversalTime() ?? DateTimeOffset.MinValue;
+        [JsonIgnore] public DateTimeOffset ValidToUTC => ValidTo?.ToUniversalTime() ?? DateTimeOffset.MaxValue;
     }
 }
