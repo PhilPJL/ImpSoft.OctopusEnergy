@@ -45,14 +45,5 @@ namespace ImpSoft.OctopusEnergy.Api
             throw new ArgumentOutOfRangeException(
                 string.Format(CultureInfo.CurrentCulture, Resources.GspNotSupported, gsp), nameof(gsp));
         }
-
-        internal static string StripAsyncSuffix(this string name)
-        {
-            if (string.IsNullOrWhiteSpace(name)) return name;
-
-            return name.EndsWith("Async", StringComparison.OrdinalIgnoreCase)
-                ? name.Substring(0, name.Length - 5)
-                : name;
-        }
     }
 }

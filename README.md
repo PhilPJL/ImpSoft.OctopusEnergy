@@ -4,31 +4,47 @@ A simple .NET Core and .NET Standard client for the Octopus Energy's API https:/
 
 ## Usage
 ``` C#
-async Task GetElectricityConsumption()
+// Initialise the client to be made available using dependency injection
+
+// Example for Blazor Wasm
+public static async Task Main(string[] args)
+{
+  ...
+  builder.Services.AddHttpClient<IOctopusEnergyClient, OctopusEnergyClient>();
+  ...
+  await builder.Build().RunAsync();
+}
+
+// Example for Blazor Server/ASP .NET core
+public void ConfigureServices(IServiceCollection services)
+{
+  ...
+  services.AddHttpClient<IOctopusEnergyClient, OctopusEnergyClient>()
+    .ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler
+    {
+      // AutomaticCompression property not supported on Blazor Wasm
+      AutomaticDecompression = System.Net.DecompressionMethods.All
+    });
+}
+
+async Task GetElectricityConsumption(IOctopusEnergyClient client)
 {
   var key = "<APIKEY>";
-
-  // create an authenticated client API with access to electricity and gas consumption
-  // and all public information
-  var api = ClientFactory.Create(key);
 
   var from = new DateTimeOffset(2020, 05, 01, 00, 00, 00, TimeSpan.FromHours(1));
   var to = new DateTimeOffset(2020, 05, 11, 23, 59, 00, TimeSpan.FromHours(1));
 
   var consumption = await api.GetElectricityConsumptionAsync(
-    "<mpan>", "<meter serial>", from, to, Interval.Day);
+    key, "<mpan>", "<meter serial>", from, to, Interval.Day);
     
   consumption.ToList()
     .ForEach(c => Console.WriteLine(
       $"[{c.Start.ToLocalTime()}-{c.End.ToLocalTime()}), {c.Quantity:00.00}"));
 }
 
-async Task GetAgileRates()
+async Task GetAgileRates(IOctopusEnergyClient client)
 {
-  // create a non-authenticated client with access to public information only
-  var api = ClientFactory.Create();
-	
-  // Retrieve GSP for postcode.  If 0 or >1 GSP found an exception will be thrown.
+  // Retrieve GSP for postcode (in this case "_C".  If 0 or more than 1 GSP is returned an exception will be thrown.
   var gsp = (await api.GetGridSupplyPointByPostcodeAsync("SW16 2GY"));
 	
   // Alternatively retrieve the GSP using the 'mpan'.

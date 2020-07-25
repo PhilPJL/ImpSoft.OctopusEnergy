@@ -2,9 +2,8 @@
 
 namespace ImpSoft.OctopusEnergy.Api
 {
-    public class GspException : Exception
+    public class GspException : ApplicationException
     {
-
         public GspException()
         {
         }
@@ -17,5 +16,4 @@ namespace ImpSoft.OctopusEnergy.Api
         {
         }
     }
-
 }

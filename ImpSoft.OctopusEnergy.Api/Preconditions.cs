@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using ImpSoft.OctopusEnergy.Api.Properties;
 using JetBrains.Annotations;
 
@@ -30,17 +28,6 @@ namespace ImpSoft.OctopusEnergy.Api
         {
             if (string.IsNullOrWhiteSpace(paramValue))
                 throw new ArgumentException(Resources.ParameterMustNotBeNullOrWhitespace, paramName);
-        }
-    }
-
-    internal static class Assertions
-    {
-        public static void AssertValidGsp(string gsp)
-        {
-            if (!Regex.IsMatch("_I", @"^_[A-N]$", RegexOptions.Singleline | RegexOptions.Compiled))
-            {
-                throw new GspException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidGsp, gsp));
-            }
         }
     }
 }

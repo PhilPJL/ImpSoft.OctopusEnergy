@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImpSoft.OctopusEnergy.Api", "ImpSoft.OctopusEnergy.Api\ImpSoft.OctopusEnergy.Api.csproj", "{7F5C467D-D892-4542-80AF-DEC0017E2B95}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImpSoft.OctopusEnergy.Api.Tests", "ImpSoft.OctopusEnergy.Api.Tests\ImpSoft.OctopusEnergy.Api.Tests.csproj", "{362ED563-7F0D-46D0-A781-DDA1330510CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7F5C467D-D892-4542-80AF-DEC0017E2B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F5C467D-D892-4542-80AF-DEC0017E2B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F5C467D-D892-4542-80AF-DEC0017E2B95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{362ED563-7F0D-46D0-A781-DDA1330510CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362ED563-7F0D-46D0-A781-DDA1330510CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362ED563-7F0D-46D0-A781-DDA1330510CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362ED563-7F0D-46D0-A781-DDA1330510CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

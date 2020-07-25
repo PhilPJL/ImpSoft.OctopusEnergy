@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>2.1.0</Version>
+		<Version>3.0.0-preview5</Version>
 		<Authors>Philip Lee</Authors>
 		<Company>ImpSoft</Company>
 		<Product>Octopus Energy API wrapper</Product>
@@ -18,14 +18,13 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>none</PackageReleaseNotes>
 		<Copyright>Copyright © Philip Lee 2020</Copyright>
-		<FileVersion>2.1.0.0</FileVersion>
-		<AssemblyVersion>2.1.0.0</AssemblyVersion>
+		<FileVersion>3.0.0.0</FileVersion>
+		<AssemblyVersion>3.0.0.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
+		<PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>
