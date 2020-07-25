@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>3.0.0</Version>
+		<Version>3.0.1</Version>
 		<Authors>Philip Lee</Authors>
 		<Company>ImpSoft</Company>
 		<Product>Octopus Energy API wrapper</Product>
@@ -18,8 +18,8 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>none</PackageReleaseNotes>
 		<Copyright>Copyright © Philip Lee 2020</Copyright>
-		<FileVersion>3.0.0.0</FileVersion>
-		<AssemblyVersion>3.0.0.0</AssemblyVersion>
+		<FileVersion>3.0.1.0</FileVersion>
+		<AssemblyVersion>3.0.1.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
