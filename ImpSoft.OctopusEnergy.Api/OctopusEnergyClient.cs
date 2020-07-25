@@ -201,7 +201,7 @@ namespace ImpSoft.OctopusEnergy.Api
         private static int MaxConsumptionPageSize { get; } = 65000;
         private static int MaxTariffsPageSize { get; } = 1500;
 
-        public HttpClient Client { get; }
+        private HttpClient Client { get; }
 
         public async Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
             DateTimeOffset from, DateTimeOffset to, Interval interval = Interval.Default)
