@@ -14,22 +14,24 @@ namespace ImpSoft.OctopusEnergy.Api
         Task<string> GetGridSupplyPointByMpanAsync(string mpan);
 
         Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(string productCode, string tariffCode,
-            ElectricityUnitRate rate = ElectricityUnitRate.Standard, DateTimeOffset? from = null,
-            DateTimeOffset? to = null);
+            DateTimeOffset? from, DateTimeOffset? to = null,
+            ElectricityUnitRate rate = ElectricityUnitRate.Standard);
 
         Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(string productCode, string tariffCode,
-            DateTimeOffset? from = null, DateTimeOffset? to = null);
+            DateTimeOffset? from, DateTimeOffset? to = null);
 
         Task<IEnumerable<Charge>> GetGasUnitRatesAsync(string productCode, string tariffCode,
-            DateTimeOffset? from = null, DateTimeOffset? to = null);
+            DateTimeOffset? from, DateTimeOffset? to = null);
 
         Task<IEnumerable<Charge>> GetGasStandingChargesAsync(string productCode, string tariffCode,
-            DateTimeOffset? from = null, DateTimeOffset? to = null);
+            DateTimeOffset? from, DateTimeOffset? to = null);
 
         Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
-            DateTimeOffset from, DateTimeOffset to, Interval group = Interval.Default);
+            DateTimeOffset? from, DateTimeOffset? to = null,
+            Interval group = Interval.Default);
 
-        Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string apiKey, string mprn, string serialNumber, DateTimeOffset from,
-            DateTimeOffset to, Interval group = Interval.Default);
+        Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string apiKey, string mprn, string serialNumber,
+            DateTimeOffset? from, DateTimeOffset? to = null, 
+            Interval group = Interval.Default);
     }
 }

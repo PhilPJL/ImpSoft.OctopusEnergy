@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>3.0.1</Version>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TargetFrameworks>netstandard2.0;net7.0;</TargetFrameworks>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>4.0.0-pre.1</Version>
 		<Authors>Philip Lee</Authors>
 		<Company>ImpSoft</Company>
 		<Product>Octopus Energy API wrapper</Product>
@@ -18,14 +23,18 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>none</PackageReleaseNotes>
 		<Copyright>Copyright © Philip Lee 2020</Copyright>
-		<FileVersion>3.0.1.0</FileVersion>
-		<AssemblyVersion>3.0.1.0</AssemblyVersion>
+		<FileVersion>4.0.0</FileVersion>
+		<AssemblyVersion>4.0.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
 		<PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
-	</ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Properties\Resources.Designer.cs">
@@ -53,4 +62,7 @@
 		</None>
 	</ItemGroup>
 
+  <Target Name="PostPackNugetDeploy" AfterTargets="Pack" Condition="'$(Configuration)'=='Debug'">
+    <Exec Command="dotnet nuget push $(OutputPath)$(PackageId).$(PackageVersion).nupkg -s local" />
+  </Target>
 </Project>
