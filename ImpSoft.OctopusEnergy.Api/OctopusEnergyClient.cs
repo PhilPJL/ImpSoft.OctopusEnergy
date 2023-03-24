@@ -196,7 +196,7 @@ namespace ImpSoft.OctopusEnergy.Api
                 .AddQueryParam("period_to", to);
         }
 
-        private static int MaxConsumptionPageSize { get; } = 65000;
+        private static int MaxConsumptionPageSize { get; } = 25000;
         private static int MaxTariffsPageSize { get; } = 1500;
 
         private HttpClient Client { get; }
@@ -244,20 +244,22 @@ namespace ImpSoft.OctopusEnergy.Api
         {
             var results = Enumerable.Empty<TResult>();
 
-            var pages = 0;
+            var page = 0;
 
             while (uri != null)
             {
-                pages++;
-
                 var response = await GetAsync<PagedResults<TResult>>(uri, typeInfo, apiKey);
 
-                results = results.Concat(response.Results ?? Enumerable.Empty<TResult>());
+                results = results.Concat(response.Results);
+
+                Debug.WriteLine($"Page={page}, results={response.Results.Count()}");
 
                 uri = string.IsNullOrEmpty(response.Next) ? null : new Uri(response.Next);
+
+                page++;
             }
 
-            Debug.WriteLine($"Pages fetched: {pages}");
+            Debug.WriteLine($"Pages fetched: {page}");
 
             return results;
         }
