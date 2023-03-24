@@ -44,7 +44,7 @@ namespace ImpSoft.OctopusEnergy.Api.Tests
 
             var client = TestHelper.CreateClient(uri, charges);
 
-            var charges1 = await client.GetElectricityUnitRatesAsync(productCode, tariffCode, rate, from, to);
+            var charges1 = await client.GetElectricityUnitRatesAsync(productCode, tariffCode, from, to, rate);
 
             Assert.AreEqual(charges.Results.Count(), charges1.Count());
 

@@ -7,12 +7,25 @@ using System.Text.Json.Serialization;
 
 namespace ImpSoft.OctopusEnergy.Api
 {
+    [JsonSerializable(typeof(ProductDetail))]
+    [JsonSerializable(typeof(GridSupplyPoint))]
+    [JsonSerializable(typeof(MeterPointGridSupplyPoint))]
+    [JsonSerializable(typeof(GridSupplyPointInfo))]
+    [JsonSerializable(typeof(PagedResults<Consumption>))]
+    [JsonSerializable(typeof(PagedResults<GridSupplyPointInfo>))]
+    [JsonSerializable(typeof(PagedResults<GridSupplyPoint>))]
+    [JsonSerializable(typeof(PagedResults<Charge>))]
+    [JsonSerializable(typeof(PagedResults<Product>))]
+    internal partial class OctopusEnergyApiJsonContext : JsonSerializerContext
+    {
+    }
+
     public class PagedResults<TResult>
     {
         [JsonPropertyName("count")] public int Count { get; set; }
-        [JsonPropertyName("next")] public string Next { get; set; }
-        [JsonPropertyName("previous")] public string Previous { get; set; }
-        [JsonPropertyName("results")] public IEnumerable<TResult> Results { get; set; }
+        [JsonPropertyName("next")] public string Next { get; set; } = string.Empty;
+        [JsonPropertyName("previous")] public string Previous { get; set; } = string.Empty;
+        [JsonPropertyName("results")] public IEnumerable<TResult> Results { get; set; } = Array.Empty<TResult>();
     }
 
     public class Consumption
@@ -44,10 +57,10 @@ namespace ImpSoft.OctopusEnergy.Api
 
     public class ProductBase
     {
-        [JsonPropertyName("code")] public string Code { get; set; }
-        [JsonPropertyName("full_name")] public string FullName { get; set; }
-        [JsonPropertyName("display_name")] public string DisplayName { get; set; }
-        [JsonPropertyName("description")] public string Description { get; set; }
+        [JsonPropertyName("code")] public string Code { get; set; } = string.Empty;
+        [JsonPropertyName("full_name")] public string FullName { get; set; } = string.Empty;
+        [JsonPropertyName("display_name")] public string DisplayName { get; set; } = string.Empty;
+        [JsonPropertyName("description")] public string Description { get; set; } = string.Empty;
         [JsonPropertyName("is_variable")] public bool IsVariable { get; set; }
         [JsonPropertyName("is_green")] public bool IsGreen { get; set; }
         [JsonPropertyName("is_tracker")] public bool IsTracker { get; set; }
@@ -55,16 +68,16 @@ namespace ImpSoft.OctopusEnergy.Api
         [JsonPropertyName("is_business")] public bool IsBusiness { get; set; }
         [JsonPropertyName("is_restricted")] public bool IsRestricted { get; set; }
         [JsonPropertyName("term")] public int? Term { get; set; }
-        [JsonPropertyName("brand")] public string Brand { get; set; }
+        [JsonPropertyName("brand")] public string Brand { get; set; } = string.Empty;
         [JsonPropertyName("available_from")] public DateTimeOffset AvailableFrom { get; set; }
         [JsonPropertyName("available_to")] public DateTimeOffset? AvailableTo { get; set; }
 
-        [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; }
+        [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; } = Array.Empty<Link>();
     }
 
     public class Product : ProductBase
     {
-        [JsonPropertyName("direction")] public string Direction { get; set; }
+        [JsonPropertyName("direction")] public string Direction { get; set; } = string.Empty;
     }
 
     public class ProductDetail : ProductBase
@@ -73,33 +86,33 @@ namespace ImpSoft.OctopusEnergy.Api
         public DateTimeOffset ActiveAt { get; set; }
 
         [JsonPropertyName("single_register_electricity_tariffs")]
-        public Dictionary<string, TariffsByPeriod> SingleRegisterElectricityTariffs { get; set; }
+        public Dictionary<string, TariffsByPeriod>? SingleRegisterElectricityTariffs { get; set; }
 
         [JsonPropertyName("dual_register_electricity_tariffs")]
-        public Dictionary<string, TariffsByPeriod> DualRegisterElectricityTariffs { get; set; }
+        public Dictionary<string, TariffsByPeriod>? DualRegisterElectricityTariffs { get; set; }
 
         [JsonPropertyName("single_register_gas_tariffs")]
-        public Dictionary<string, TariffsByPeriod> SingleRegisterGasTariffs { get; set; }
+        public Dictionary<string, TariffsByPeriod>? SingleRegisterGasTariffs { get; set; }
 
-        [JsonPropertyName("sample_quotes")] public Dictionary<string, SampleQuotesByPeriod> SampleQuotes { get; set; }
+        [JsonPropertyName("sample_quotes")] public Dictionary<string, SampleQuotesByPeriod>? SampleQuotes { get; set; }
 
         [JsonPropertyName("sample_consumption")]
-        public SampleConsumptionByRate SampleConsumption { get; set; }
+        public SampleConsumptionByRate? SampleConsumption { get; set; }
     }
 
     public class SampleConsumptionByRate
     {
         [JsonPropertyName("electricity_single_rate")]
-        public SampleConsumption ElectricitySingleRate { get; set; }
+        public SampleConsumption? ElectricitySingleRate { get; set; }
 
         [JsonPropertyName("electricity_dual_rate")]
-        public SampleConsumption ElectricityDualRate { get; set; }
+        public SampleConsumption? ElectricityDualRate { get; set; }
 
         [JsonPropertyName("dual_fuel_single_rate")]
-        public SampleConsumption DualFuelSingleRate { get; set; }
+        public SampleConsumption? DualFuelSingleRate { get; set; }
 
         [JsonPropertyName("dual_fuel_dual_rate")]
-        public SampleConsumption DualFuelDualRate { get; set; }
+        public SampleConsumption? DualFuelDualRate { get; set; }
     }
 
     public class SampleConsumption
@@ -118,15 +131,15 @@ namespace ImpSoft.OctopusEnergy.Api
     public class TariffsByPeriod
     {
         [JsonPropertyName("direct_debit_monthly")]
-        public Tariff Monthly { get; set; }
+        public Tariff? Monthly { get; set; }
 
         [JsonPropertyName("direct_debit_quarterly")]
-        public Tariff Quarterly { get; set; }
+        public Tariff? Quarterly { get; set; }
     }
 
     public class Tariff
     {
-        [JsonPropertyName("code")] public string Code { get; set; }
+        [JsonPropertyName("code")] public string Code { get; set; } = string.Empty;
 
         [JsonPropertyName("standing_charge_exc_vat")]
         public decimal StandingChargeExcludingVAT { get; set; }
@@ -170,31 +183,31 @@ namespace ImpSoft.OctopusEnergy.Api
         [JsonPropertyName("night_unit_rate_inc_vat")]
         public decimal? NightUnitRateIncludingVAT { get; set; }
 
-        [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; }
+        [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; } = Array.Empty<Link>();
     }
 
     public class SampleQuotesByPeriod
     {
         [JsonPropertyName("direct_debit_monthly")]
-        public SampleQuotes Monthly { get; set; }
+        public SampleQuotes? Monthly { get; set; }
 
         [JsonPropertyName("direct_debit_quarterly")]
-        public SampleQuotes Quarterly { get; set; }
+        public SampleQuotes? Quarterly { get; set; }
     }
 
     public class SampleQuotes
     {
         [JsonPropertyName("electricity_single_rate")]
-        public SampleQuote ElectricitySingleRate { get; set; }
+        public SampleQuote? ElectricitySingleRate { get; set; }
 
         [JsonPropertyName("electricity_dual_rate")]
-        public SampleQuote ElectricityDualRate { get; set; }
+        public SampleQuote? ElectricityDualRate { get; set; }
 
         [JsonPropertyName("dual_fuel_single_rate")]
-        public SampleQuote DualFuelSingleRate { get; set; }
+        public SampleQuote? DualFuelSingleRate { get; set; }
 
         [JsonPropertyName("dual_fuel_dual_rate")]
-        public SampleQuote DualFuelDualRate { get; set; }
+        public SampleQuote? DualFuelDualRate { get; set; }
     }
 
     public class SampleQuote
@@ -208,28 +221,28 @@ namespace ImpSoft.OctopusEnergy.Api
 
     public class Link
     {
-        [JsonPropertyName("href")] public string HRef { get; set; }
-        [JsonPropertyName("method")] public string Method { get; set; }
-        [JsonPropertyName("rel")] public string Rel { get; set; }
+        [JsonPropertyName("href")] public string HRef { get; set; } = string.Empty;
+        [JsonPropertyName("method")] public string Method { get; set; } = string.Empty;
+        [JsonPropertyName("rel")] public string Rel { get; set; } = string.Empty;
     }
 
     internal class MeterPointGridSupplyPoint
     {
-        [JsonPropertyName("gsp")] public string GroupId { get; set; }
-        [JsonPropertyName("mpan")] public string MPan { get; set; }
+        [JsonPropertyName("gsp")] public string GroupId { get; set; } = string.Empty;
+        [JsonPropertyName("mpan")] public string MPan { get; set; } = string.Empty;
         [JsonPropertyName("profile_class")] public int ProfileClass { get; set; }
     }
 
     internal class GridSupplyPoint
     {
-        [JsonPropertyName("group_id")] public string GroupId { get; set; }
+        [JsonPropertyName("group_id")] public string GroupId { get; set; } = string.Empty;
     }
 
     public class GridSupplyPointInfo
     {
-        public string GroupId { get; set; }
-        public string AreaId { get; set; }
-        public string Area { get; set; }
+        public string? GroupId { get; set; }
+        public string? AreaId { get; set; }
+        public string? Area { get; set; }
 
         public static IEnumerable<GridSupplyPointInfo> GetAll()
         {
