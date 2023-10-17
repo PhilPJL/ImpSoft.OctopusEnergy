@@ -35,9 +35,7 @@ namespace ImpSoft.OctopusEnergy.Api
         [JsonPropertyName("interval_end")] public DateTimeOffset End { get; set; }
     }
 
-#pragma warning disable CA1027 // Mark enums with FlagsAttribute
     public enum Interval
-#pragma warning restore CA1027 // Mark enums with FlagsAttribute
     {
         Default,
         HalfHour = Default,
