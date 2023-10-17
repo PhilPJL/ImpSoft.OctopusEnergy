@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.0-pre.5</Version>
+    <Version>4.0.0-pre.6</Version>
 		<Authors>Philip Lee</Authors>
 		<Company>ImpSoft</Company>
 		<Product>Octopus Energy API wrapper</Product>
@@ -25,6 +25,9 @@
 		<Copyright>Copyright © Philip Lee 2020-2023</Copyright>
 		<FileVersion>4.0.0</FileVersion>
 		<AssemblyVersion>4.0.0</AssemblyVersion>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<ItemGroup>

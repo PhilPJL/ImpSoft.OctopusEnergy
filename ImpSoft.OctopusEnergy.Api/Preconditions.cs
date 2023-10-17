@@ -2,32 +2,32 @@
 using ImpSoft.OctopusEnergy.Api.Properties;
 using JetBrains.Annotations;
 
-namespace ImpSoft.OctopusEnergy.Api
+namespace ImpSoft.OctopusEnergy.Api;
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public static class Preconditions
 {
-    public static class Preconditions
+    [ContractAnnotation("halt <= paramValue : null")]
+    [AssertionMethod]
+    public static void IsNotNull<T>([NoEnumeration] T paramValue, [InvokerParameterName] string paramName)
+        where T : class
     {
-        [ContractAnnotation("halt <= paramValue : null")]
-        [AssertionMethod]
-        public static void IsNotNull<T>([NotNull] [NoEnumeration] T paramValue, [InvokerParameterName] string paramName)
-            where T : class
-        {
-            if (paramValue == null) throw new ArgumentNullException(paramName);
-        }
+        if (paramValue == null) throw new ArgumentNullException(paramName);
+    }
 
-        [ContractAnnotation("halt <= paramValue : null")]
-        [AssertionMethod]
-        public static void IsNotNullOrEmpty([NotNull] string paramValue, [InvokerParameterName] string paramName)
-        {
-            if (string.IsNullOrEmpty(paramValue))
-                throw new ArgumentException(Resources.ParameterMustNotBeNullOrEmpty, paramName);
-        }
+    [ContractAnnotation("halt <= paramValue : null")]
+    [AssertionMethod]
+    public static void IsNotNullOrEmpty(string paramValue, [InvokerParameterName] string paramName)
+    {
+        if (string.IsNullOrEmpty(paramValue))
+            throw new ArgumentException(Resources.ParameterMustNotBeNullOrEmpty, paramName);
+    }
 
-        [ContractAnnotation("halt <= paramValue : null")]
-        [AssertionMethod]
-        public static void IsNotNullOrWhiteSpace([NotNull] string paramValue, [InvokerParameterName] string paramName)
-        {
-            if (string.IsNullOrWhiteSpace(paramValue))
-                throw new ArgumentException(Resources.ParameterMustNotBeNullOrWhitespace, paramName);
-        }
+    [ContractAnnotation("halt <= paramValue : null")]
+    [AssertionMethod]
+    public static void IsNotNullOrWhiteSpace(string paramValue, [InvokerParameterName] string paramName)
+    {
+        if (string.IsNullOrWhiteSpace(paramValue))
+            throw new ArgumentException(Resources.ParameterMustNotBeNullOrWhitespace, paramName);
     }
 }

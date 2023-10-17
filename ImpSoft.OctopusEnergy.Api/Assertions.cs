@@ -2,16 +2,15 @@
 using System.Text.RegularExpressions;
 using ImpSoft.OctopusEnergy.Api.Properties;
 
-namespace ImpSoft.OctopusEnergy.Api
+namespace ImpSoft.OctopusEnergy.Api;
+
+internal static class Assertions
 {
-    internal static class Assertions
+    public static void AssertValidGsp(string gsp)
     {
-        public static void AssertValidGsp(string gsp)
+        if (!Regex.IsMatch(gsp, @"^_[A-N]$", RegexOptions.Singleline | RegexOptions.Compiled))
         {
-            if (!Regex.IsMatch(gsp, @"^_[A-N]$", RegexOptions.Singleline | RegexOptions.Compiled))
-            {
-                throw new GspException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidGsp, gsp));
-            }
+            throw new GspException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidGsp, gsp));
         }
     }
 }
