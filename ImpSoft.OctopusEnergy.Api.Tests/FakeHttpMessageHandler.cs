@@ -13,8 +13,12 @@ internal class FakeHttpMessageHandler<TResponse> : HttpClientHandler where TResp
     {
         Preconditions.IsNotNull(response, nameof(response));
         Preconditions.IsNotNull(expectedUri, nameof(expectedUri));
-        
+
+#if NET48_OR_GREATER
+        AutomaticDecompression = System.Net.DecompressionMethods.None;
+#else
         AutomaticDecompression = System.Net.DecompressionMethods.All;
+#endif
         ResponseObject = response;
         ExpectedRequestUri = expectedUri;
 
