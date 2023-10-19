@@ -279,7 +279,7 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
             results = results.Concat(response.Results);
 
-            Debug.WriteLine($"Page={page}, results={response.Results.Count()}");
+            Debug.WriteLine($"Page={page}, results={response.Results.Count}");
 
             uri = string.IsNullOrEmpty(response.Next) ? null : new Uri(response.Next);
 
@@ -289,6 +289,20 @@ public class OctopusEnergyClient : IOctopusEnergyClient
         Debug.WriteLine($"Pages fetched: {page}");
 
         return results;
+    }
+
+    internal static Uri ComposeGetAccountUri(Uri baseUri, string accountId)
+    {
+        Guard.IsNotNullOrWhiteSpace(accountId);
+
+        return new Uri(baseUri, $"v1/accounts/{accountId}/");
+    }
+
+    public async Task<Account> GetAccountAsync(string accountId)
+    {
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetAccountUri(Client.BaseAddress, accountId);
+        return await GetAsync(uri, OctopusEnergyApiJsonContext.Default.Account);
     }
 
     private async Task<TResult> GetAsync<TResult>(Uri uri, JsonTypeInfo<TResult> typeInfo) where TResult : class

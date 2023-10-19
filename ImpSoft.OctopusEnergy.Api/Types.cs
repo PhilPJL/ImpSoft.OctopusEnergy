@@ -1,8 +1,9 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using JetBrains.Annotations;
 
 [assembly: InternalsVisibleTo("ImpSoft.OctopusEnergy.Api.Tests")]
 [assembly: InternalsVisibleTo("TestHarness")]
@@ -18,6 +19,7 @@ namespace ImpSoft.OctopusEnergy.Api;
 [JsonSerializable(typeof(PagedResults<GridSupplyPoint>))]
 [JsonSerializable(typeof(PagedResults<Charge>))]
 [JsonSerializable(typeof(PagedResults<Product>))]
+[JsonSerializable(typeof(Account))]
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 internal partial class OctopusEnergyApiJsonContext : JsonSerializerContext
 {
@@ -29,7 +31,88 @@ public class PagedResults<TResult>
     [JsonPropertyName("count")] public int Count { get; set; }
     [JsonPropertyName("next")] public string Next { get; set; } = string.Empty;
     [JsonPropertyName("previous")] public string Previous { get; set; } = string.Empty;
-    [JsonPropertyName("results")] public IEnumerable<TResult> Results { get; set; } = Array.Empty<TResult>();
+    [JsonPropertyName("results")] public ICollection<TResult> Results { get; set; } = Array.Empty<TResult>();
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class Account
+{
+    [JsonPropertyName("number")] public string Number { get; set; } = string.Empty;
+    [JsonPropertyName("properties")] public ICollection<Property> Properties { get; set; } = Array.Empty<Property>();
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+[SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "<Pending>")]
+public class Property
+{
+    [JsonPropertyName("id")] public int Id { get; set; }
+    [JsonPropertyName("moved_in_at")] public DateTimeOffset MovedInAt { get; set; }
+    [JsonPropertyName("moved_out_at")] public DateTimeOffset? MovedOutAt { get; set; }
+    [JsonPropertyName("address_line_1")] public string AddressLine1 { get; set; } = string.Empty;
+    [JsonPropertyName("address_line_2")] public string AddressLine2 { get; set; } = string.Empty;
+    [JsonPropertyName("address_line_3")] public string AddressLine3 { get; set; } = string.Empty;
+    [JsonPropertyName("town")] public string Town { get; set; } = string.Empty;
+    [JsonPropertyName("county")] public string County { get; set; } = string.Empty;
+    [JsonPropertyName("postcode")] public string Postcode { get; set; } = string.Empty;
+    [JsonPropertyName("electricity_meter_points")] public ICollection<ElectricityMeterPoint> ElectricityMeterPoints { get; set; } = Array.Empty<ElectricityMeterPoint>();
+    [JsonPropertyName("gas_meter_points")] public ICollection<GasMeterPoint> GasMeterPoints { get; set; } = Array.Empty<GasMeterPoint>();
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class ElectricityMeterPoint
+{
+    [JsonPropertyName("mpan")] public string Mpan { get; set; } = string.Empty;
+    [JsonPropertyName("profile_class")] public int ProfileClass { get; set; }
+    [JsonPropertyName("consumption_day")] public int ConsumptionDay { get; set; }
+    [JsonPropertyName("consumption_night")] public int ConsumptionNight { get; set; }
+    [JsonPropertyName("meters")] public ICollection<ElectricityMeter> Meters { get; set; } = Array.Empty<ElectricityMeter>();
+    [JsonPropertyName("agreements")] public ICollection<Agreement> Agreements { get; set; } = Array.Empty<Agreement>();
+    [JsonPropertyName("is_export")] public bool IsExport { get; set; }
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class Meter
+{
+    [JsonPropertyName("serial_number")] public string SerialNumber { get; set; } = string.Empty;
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class ElectricityMeter : Meter
+{
+    [JsonPropertyName("registers")] public ICollection<Register> Registers { get; set; } = Array.Empty<Register>();
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class GasMeterPoint
+{
+    [JsonPropertyName("mprn")] public string Mprn { get; set; } = string.Empty;
+    [JsonPropertyName("consumption_standard")] public int ConsumptionStandard { get; set; }
+    [JsonPropertyName("meters")] public ICollection<GasMeter> Meters { get; set; } = Array.Empty<GasMeter>();
+    [JsonPropertyName("agreements")] public ICollection<Agreement> Agreements { get; set; } = Array.Empty<Agreement>();
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class GasMeter : Meter
+{
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class Register
+{
+    [JsonPropertyName("identifier")] public string Identifier { get; set; } = string.Empty;
+
+    [JsonPropertyName("rate")]
+    [JsonConverter(typeof(JsonStringEnumConverter))] 
+    public ElectricityUnitRate Rate { get; set; }
+    [JsonPropertyName("is_settlement_register")] public bool IsSettlementRegister { get; set; }
+}
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+public class Agreement
+{
+    [JsonPropertyName("tariff_code")] public string TariffCode { get; set; } = string.Empty;
+    [JsonPropertyName("valid_from")] public DateTimeOffset ValidFrom { get; set; }
+    [JsonPropertyName("valid_to")] public DateTimeOffset? ValidTo { get; set; }
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -55,6 +138,7 @@ public enum Interval
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public enum ElectricityUnitRate
 {
+    None = 0,
     Standard,
     Day,
     Night
