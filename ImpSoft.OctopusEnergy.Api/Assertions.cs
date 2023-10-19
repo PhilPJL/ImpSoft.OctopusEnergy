@@ -1,10 +1,13 @@
 ﻿using System.Globalization;
+#if NET8_0_OR_GREATER
 using System.Text;
+#endif
 using System.Text.RegularExpressions;
 using ImpSoft.OctopusEnergy.Api.Properties;
 
 namespace ImpSoft.OctopusEnergy.Api;
 
+// ReSharper disable once PartialTypeWithSinglePart
 internal static partial class Assertions
 {
 #if NET7_0_OR_GREATER

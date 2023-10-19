@@ -7,7 +7,6 @@ using System.Text;
 using ImpSoft.OctopusEnergy.Api.Properties;
 using JetBrains.Annotations;
 using CommunityToolkit.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ImpSoft.OctopusEnergy.Api;
 
