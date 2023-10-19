@@ -11,7 +11,7 @@ public class GridSupplyPointTests
     [TestMethod]
     public async Task GetGridSupplyPointByMpanSucceedsAsync()
     {
-        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByMpanUri("123456789");
+        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByMpanUri(OctopusEnergyClient.DefaultBaseAddress, "123456789");
 
         var client = TestHelper.CreateClient(uri, new MeterPointGridSupplyPoint { GroupId = "_A" });
 
@@ -21,7 +21,7 @@ public class GridSupplyPointTests
     [TestMethod]
     public async Task GetGridSupplyPointByMpanThrowsAsync()
     {
-        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByMpanUri("123456789X");
+        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByMpanUri(OctopusEnergyClient.DefaultBaseAddress, "123456789X");
 
         var client = TestHelper.CreateClient(uri, new MeterPointGridSupplyPoint { GroupId = "_A" });
 
@@ -32,7 +32,7 @@ public class GridSupplyPointTests
     [TestMethod]
     public async Task GetGridSupplyPointByPostcodeSucceedsAsync()
     {
-        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri("AB12 3XY");
+        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri(OctopusEnergyClient.DefaultBaseAddress, "AB12 3XY");
 
         var client = TestHelper.CreateClient(uri, new PagedResults<GridSupplyPoint>
         {
@@ -46,7 +46,7 @@ public class GridSupplyPointTests
     [TestMethod]
     public async Task GetGridSupplyPointByPostcodeNoResultsThrowsAsync()
     {
-        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri("AB12 3XY");
+        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri(OctopusEnergyClient.DefaultBaseAddress, "AB12 3XY");
 
         var client = TestHelper.CreateClient(uri, new PagedResults<GridSupplyPoint>
         {
@@ -60,7 +60,7 @@ public class GridSupplyPointTests
     [TestMethod]
     public async Task GetGridSupplyPointByPostcodeInvalidGspThrowsAsync()
     {
-        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri("AB12 3XY");
+        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri(OctopusEnergyClient.DefaultBaseAddress, "AB12 3XY");
 
         var client = TestHelper.CreateClient(uri, new PagedResults<GridSupplyPoint>
         {
@@ -74,7 +74,7 @@ public class GridSupplyPointTests
     [TestMethod]
     public async Task GetGridSupplyPointByPostcodeMoreThanOneResultThrowsAsync()
     {
-        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri("AB12 3XY");
+        var uri = OctopusEnergyClient.ComposeGetGridSupplyPointByPostcodeUri(OctopusEnergyClient.DefaultBaseAddress, "AB12 3XY");
 
         var client = TestHelper.CreateClient(uri, new PagedResults<GridSupplyPoint>
         {

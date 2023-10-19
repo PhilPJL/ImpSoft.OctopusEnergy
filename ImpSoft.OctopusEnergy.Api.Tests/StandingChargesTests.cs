@@ -42,7 +42,7 @@ public class StandingChargesTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetElectricityStandingChargesUri(productCode, tariffCode, from, to);
+        var uri = OctopusEnergyClient.ComposeGetElectricityStandingChargesUri(OctopusEnergyClient.DefaultBaseAddress, productCode, tariffCode, from, to);
 
         var client = TestHelper.CreateClient(uri, charges);
 
@@ -93,7 +93,7 @@ public class StandingChargesTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetGasStandingChargesUri(productCode, tariffCode, from, to);
+        var uri = OctopusEnergyClient.ComposeGetGasStandingChargesUri(OctopusEnergyClient.DefaultBaseAddress, productCode, tariffCode, from, to);
 
         var client = TestHelper.CreateClient(uri, charges);
 

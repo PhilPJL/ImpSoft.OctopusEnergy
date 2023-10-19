@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using JetBrains.Annotations;
 
 [assembly: InternalsVisibleTo("ImpSoft.OctopusEnergy.Api.Tests")]
+[assembly: InternalsVisibleTo("TestHarness")]
 
 namespace ImpSoft.OctopusEnergy.Api;
 

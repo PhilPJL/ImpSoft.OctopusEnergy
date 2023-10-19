@@ -66,7 +66,7 @@ public static class Extensions
     private static readonly CompositeFormat _cfForGsp = CompositeFormat.Parse(Resources.GspNotSupported);
 #endif
 
-    public static void SetAuthenticationHeader(this HttpClient httpClient, string apiKey)
+    public static void SetAuthenticationHeaderFromApiKey(this HttpClient httpClient, string apiKey)
     {
         Guard.IsNotNull(httpClient, nameof(httpClient));
         Guard.IsNotNullOrWhiteSpace(apiKey, nameof(apiKey));

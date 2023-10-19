@@ -8,6 +8,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using ImpSoft.OctopusEnergy.Api.Properties;
 using JetBrains.Annotations;
 
@@ -21,22 +22,28 @@ public class OctopusEnergyClient : IOctopusEnergyClient
         Preconditions.IsNotNull(client, nameof(client));
 
         Client = client;
+
+        if(client.BaseAddress == null)
+        {
+            client.BaseAddress = DefaultBaseAddress;
+        }
     }
 
     [UsedImplicitly]
-    public static string BaseUrl => "https://api.octopus.energy";
+    public static Uri DefaultBaseAddress => new("https://api.octopus.energy");
 
     public async Task<IEnumerable<Product>> GetProductsAsync(
         DateTimeOffset? availableAt = null, bool? isVariable = null, bool? isGreen = null, bool? isTracker = null,
         bool? isPrepay = null, bool? isBusiness = null)
     {
-        var uri = ComposeGetProductsUri(availableAt, isVariable, isGreen, isTracker, isPrepay, isBusiness);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetProductsUri(Client.BaseAddress, availableAt, isVariable, isGreen, isTracker, isPrepay, isBusiness);
         return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsProduct);
     }
 
-    internal static Uri ComposeGetProductsUri(DateTimeOffset? availableAt, bool? isVariable, bool? isGreen, bool? isTracker, bool? isPrepay, bool? isBusiness)
+    internal static Uri ComposeGetProductsUri(Uri baseUri, DateTimeOffset? availableAt, bool? isVariable, bool? isGreen, bool? isTracker, bool? isPrepay, bool? isBusiness)
     {
-        return new Uri($"{BaseUrl}/v1/products/")
+        return new Uri(baseUri, $"/v1/products/")
             .AddQueryParam("available_at", availableAt)
             .AddQueryParam("is_variable", isVariable)
             .AddQueryParam("is_green", isGreen)
@@ -47,22 +54,24 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     public async Task<ProductDetail> GetProductAsync(string productCode, DateTimeOffset? tariffsActiveAt = null)
     {
-        var uri = ComposeGetProductUri(productCode, tariffsActiveAt);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetProductUri(Client.BaseAddress, productCode, tariffsActiveAt);
 
         return await GetAsync(uri, OctopusEnergyApiJsonContext.Default.ProductDetail);
     }
 
-    internal static Uri ComposeGetProductUri(string productCode, DateTimeOffset? tariffsActiveAt)
+    internal static Uri ComposeGetProductUri(Uri baseUri, string productCode, DateTimeOffset? tariffsActiveAt)
     {
         Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
 
-        return new Uri($"{BaseUrl}/v1/products/{productCode}/")
+        return new Uri(baseUri, $"/v1/products/{productCode}/")
             .AddQueryParam("tariffs_active_at ", tariffsActiveAt);
     }
 
     public async Task<string> GetGridSupplyPointByPostcodeAsync(string postcode)
     {
-        var uri = ComposeGetGridSupplyPointByPostcodeUri(postcode);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetGridSupplyPointByPostcodeUri(Client.BaseAddress, postcode);
 
         var result = (await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsGridSupplyPoint)).ToList();
 
@@ -81,19 +90,20 @@ public class OctopusEnergyClient : IOctopusEnergyClient
         return gsp;
     }
 
-    internal static Uri ComposeGetGridSupplyPointByPostcodeUri(string postcode)
+    internal static Uri ComposeGetGridSupplyPointByPostcodeUri(Uri baseUri, string postcode)
     {
         Preconditions.IsNotNullOrWhiteSpace(postcode, nameof(postcode));
 
-        return new Uri($"{BaseUrl}/v1/industry/grid-supply-points/")
+        return new Uri(baseUri, $"/v1/industry/grid-supply-points/")
             .AddQueryParam("postcode", postcode);
     }
 
     public async Task<string> GetGridSupplyPointByMpanAsync(string mpan)
     {
-        var uriString = ComposeGetGridSupplyPointByMpanUri(mpan);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uriString = ComposeGetGridSupplyPointByMpanUri(Client.BaseAddress, mpan);
 
-        var result = await GetAsync(new Uri(uriString), OctopusEnergyApiJsonContext.Default.MeterPointGridSupplyPoint);
+        var result = await GetAsync(uriString, OctopusEnergyApiJsonContext.Default.MeterPointGridSupplyPoint);
 
         var gsp = result.GroupId;
 
@@ -102,28 +112,29 @@ public class OctopusEnergyClient : IOctopusEnergyClient
         return gsp;
     }
 
-    internal static string ComposeGetGridSupplyPointByMpanUri(string mpan)
+    internal static Uri ComposeGetGridSupplyPointByMpanUri(Uri baseUri, string mpan)
     {
-        Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
+        Guard.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
 
-        return $"{BaseUrl}/v1/electricity-meter-points/{mpan}/";
+        return new Uri(baseUri, $"/v1/electricity-meter-points/{mpan}/");
     }
 
     public async Task<IEnumerable<Charge>> GetElectricityUnitRatesAsync(string productCode, string tariffCode,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null, 
         ElectricityUnitRate rate = ElectricityUnitRate.Standard)
     {
-        var uri = ComposeGetElectricityUnitRatesUri(productCode, tariffCode, rate, fromDateTime, toDateTime);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetElectricityUnitRatesUri(Client.BaseAddress,productCode, tariffCode, rate, fromDateTime, toDateTime);
         return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsCharge);
     }
 
-    internal static Uri ComposeGetElectricityUnitRatesUri(string productCode, string tariffCode, ElectricityUnitRate rate,
+    internal static Uri ComposeGetElectricityUnitRatesUri(Uri baseUri, string productCode, string tariffCode, ElectricityUnitRate rate,
         DateTimeOffset? from, DateTimeOffset? to = null)
     {
         Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
         Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-        return new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
+        return new Uri(baseUri, $"/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
             .AddQueryParam("period_from", from)
             .AddQueryParam("period_to", to);
@@ -143,16 +154,17 @@ public class OctopusEnergyClient : IOctopusEnergyClient
     public async Task<IEnumerable<Charge>> GetElectricityStandingChargesAsync(string productCode, string tariffCode,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null)
     {
-        var uri = ComposeGetElectricityStandingChargesUri(productCode, tariffCode, fromDateTime, toDateTime);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetElectricityStandingChargesUri(Client.BaseAddress, productCode, tariffCode, fromDateTime, toDateTime);
         return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsCharge);
     }
 
-    internal static Uri ComposeGetElectricityStandingChargesUri(string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to = null)
+    internal static Uri ComposeGetElectricityStandingChargesUri(Uri baseUri, string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to = null)
     {
         Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
         Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-        return new Uri($"{BaseUrl}/v1/products/{productCode}/electricity-tariffs/{tariffCode}/standing-charges/")
+        return new Uri(baseUri, $"/v1/products/{productCode}/electricity-tariffs/{tariffCode}/standing-charges/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
             .AddQueryParam("period_from", from)
             .AddQueryParam("period_to", to);
@@ -160,16 +172,17 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     public async Task<IEnumerable<Charge>> GetGasUnitRatesAsync(string productCode, string tariffCode, DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null)
     {
-        var uri = ComposeGetGasUnitRatesUri(productCode, tariffCode, fromDateTime, toDateTime);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetGasUnitRatesUri(Client.BaseAddress, productCode, tariffCode, fromDateTime, toDateTime);
         return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsCharge);
     }
 
-    internal static Uri ComposeGetGasUnitRatesUri(string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to = null)
+    internal static Uri ComposeGetGasUnitRatesUri(Uri baseUri, string productCode, string tariffCode, DateTimeOffset? from, DateTimeOffset? to = null)
     {
         Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
         Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-        return new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standard-unit-rates/")
+        return new Uri(baseUri, $"/v1/products/{productCode}/gas-tariffs/{tariffCode}/standard-unit-rates/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
             .AddQueryParam("period_from", from)
             .AddQueryParam("period_to", to);
@@ -177,17 +190,18 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     public async Task<IEnumerable<Charge>> GetGasStandingChargesAsync(string productCode, string tariffCode, DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null)
     {
-        var uri = ComposeGetGasStandingChargesUri(productCode, tariffCode, fromDateTime, toDateTime);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetGasStandingChargesUri(Client.BaseAddress, productCode, tariffCode, fromDateTime, toDateTime);
         return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsCharge);
     }
 
-    internal static Uri ComposeGetGasStandingChargesUri(string productCode, string tariffCode, 
+    internal static Uri ComposeGetGasStandingChargesUri(Uri baseUri, string productCode, string tariffCode, 
         DateTimeOffset? from, DateTimeOffset? to = null)
     {
         Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
         Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
 
-        return new Uri($"{BaseUrl}/v1/products/{productCode}/gas-tariffs/{tariffCode}/standing-charges/")
+        return new Uri(baseUri, $"/v1/products/{productCode}/gas-tariffs/{tariffCode}/standing-charges/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
             .AddQueryParam("period_from", from)
             .AddQueryParam("period_to", to);
@@ -198,46 +212,47 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     private HttpClient Client { get; }
 
-    public async Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
+    public async Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string mpan, string serialNumber,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null, Interval group = Interval.Default)
     {
-        var uri = ComposeGetElectricityConsumptionUri(mpan, serialNumber, fromDateTime, toDateTime, group);
-
-        return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsConsumption, apiKey);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetElectricityConsumptionUri(Client.BaseAddress, mpan, serialNumber, fromDateTime, toDateTime, group);
+        return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsConsumption);
     }
 
-    internal static Uri ComposeGetElectricityConsumptionUri(string mpan, string serialNumber, DateTimeOffset? from, DateTimeOffset? to, Interval interval)
+    internal static Uri ComposeGetElectricityConsumptionUri(Uri baseUri, string mpan, string serialNumber, DateTimeOffset? from, DateTimeOffset? to, Interval interval)
     {
         Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
         Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
 
-        return new Uri($"{BaseUrl}/v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
+        return new Uri(baseUri, $"v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
             .AddQueryParam(interval)
             .AddQueryParam("page_size", MaxConsumptionPageSize)
             .AddQueryParam("period_from", from)
             .AddQueryParam("period_to", to);
     }
 
-    public async Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string apiKey, string mprn, string serialNumber,
+    public async Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string mprn, string serialNumber,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null, Interval group = Interval.Default)
     {
-        var uri = ComposeGetGasConsumptionUri(mprn, serialNumber, fromDateTime, toDateTime, group);
-        return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsConsumption, apiKey);
+        Guard.IsNotNull(Client.BaseAddress);
+        var uri = ComposeGetGasConsumptionUri(Client.BaseAddress, mprn, serialNumber, fromDateTime, toDateTime, group);
+        return await GetCollectionAsync(uri, OctopusEnergyApiJsonContext.Default.PagedResultsConsumption);
     }
 
-    internal static Uri ComposeGetGasConsumptionUri(string mprn, string serialNumber, DateTimeOffset? from, DateTimeOffset? to, Interval interval)
+    internal static Uri ComposeGetGasConsumptionUri(Uri baseUri, string mprn, string serialNumber, DateTimeOffset? from, DateTimeOffset? to, Interval interval)
     {
         Preconditions.IsNotNullOrWhiteSpace(mprn, nameof(mprn));
         Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
 
-        return new Uri($"{BaseUrl}/v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
+        return new Uri(baseUri, $"v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
             .AddQueryParam(interval)
             .AddQueryParam("page_size", MaxConsumptionPageSize)
             .AddQueryParam("period_from", from)
             .AddQueryParam("period_to", to);
     }
 
-    protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri? uri, JsonTypeInfo<PagedResults<TResult>> typeInfo, string? apiKey = null)
+    protected async Task<IEnumerable<TResult>> GetCollectionAsync<TResult>(Uri? uri, JsonTypeInfo<PagedResults<TResult>> typeInfo)
     {
         var results = Enumerable.Empty<TResult>();
 
@@ -245,7 +260,7 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
         while (uri != null)
         {
-            var response = await GetAsync(uri, typeInfo, apiKey);
+            var response = await GetAsync(uri, typeInfo);
 
             results = results.Concat(response.Results);
 
@@ -261,29 +276,11 @@ public class OctopusEnergyClient : IOctopusEnergyClient
         return results;
     }
 
-    private async Task<TResult> GetAsync<TResult>(Uri uri, JsonTypeInfo<TResult> typeInfo, string? apiKey = null) where TResult : class
+    private async Task<TResult> GetAsync<TResult>(Uri uri, JsonTypeInfo<TResult> typeInfo) where TResult : class
     {
-        Debug.WriteLine(uri.ToString());
+        var result = await Client.GetFromJsonAsync<TResult>(uri, typeInfo);
 
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = uri
-        };
-
-        // TODO: if the api key was configured in the HttpClientHandler then this method could be reduced to:
-        // await Client.GetFromJsonAsync<TResult>(uri);
-
-        if (!string.IsNullOrEmpty(apiKey))
-        {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
-        }
-
-        using var httpResponse = await Client.SendAsync(request);
-
-        httpResponse.EnsureSuccessStatusCode();
-
-        var result = await httpResponse.Content.ReadFromJsonAsync(typeInfo) ?? throw new InvalidOperationException();
+        Guard.IsNotNull(result);
 
         return result;
     }

@@ -57,11 +57,35 @@ public interface IOctopusEnergyClient
     Task<IEnumerable<Charge>> GetGasStandingChargesAsync(string productCode, string tariffCode,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null);
 
-    Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string apiKey, string mpan, string serialNumber,
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// Requires authentication
+    /// </remarks>
+    /// <param name="mpan"></param>
+    /// <param name="serialNumber"></param>
+    /// <param name="fromDateTime"></param>
+    /// <param name="toDateTime"></param>
+    /// <param name="group"></param>
+    /// <returns></returns>
+    Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string mpan, string serialNumber,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null,
         Interval group = Interval.Default);
 
-    Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string apiKey, string mprn, string serialNumber,
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// Requires authentication
+    /// </remarks>
+    /// <param name="mprn"></param>
+    /// <param name="serialNumber"></param>
+    /// <param name="fromDateTime"></param>
+    /// <param name="toDateTime"></param>
+    /// <param name="group"></param>
+    /// <returns></returns>
+    Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string mprn, string serialNumber,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null, 
         Interval group = Interval.Default);
 }

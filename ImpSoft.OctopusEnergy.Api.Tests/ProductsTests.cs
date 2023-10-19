@@ -40,7 +40,7 @@ public class ProductsTests
             // SingleRegisterGasTariffs
         };
 
-        var uri = OctopusEnergyClient.ComposeGetProductUri(code, null);
+        var uri = OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, code, null);
 
         var client = TestHelper.CreateClient(uri, product);
 
@@ -99,7 +99,7 @@ public class ProductsTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetProductsUri(null, null, null, null, null, null);
+        var uri = OctopusEnergyClient.ComposeGetProductsUri(OctopusEnergyClient.DefaultBaseAddress, null, null, null, null, null, null);
 
         var client = TestHelper.CreateClient(uri, products);
 
@@ -127,12 +127,12 @@ public class ProductsTests
     [TestMethod]
     public void GetProductWithNullProductCodeThrows()
     {
-        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri(string.Empty, null));
+        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, string.Empty, null));
     }
 
     [TestMethod]
     public void GetProductWithEmptyProductCodeThrows()
     {
-        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri("    ", null));
+        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, "    ", null));
     }
 }

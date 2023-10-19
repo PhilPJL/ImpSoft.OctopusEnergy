@@ -41,11 +41,11 @@ public class ConsumptionTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetElectricityConsumptionUri(mpan, serialNumber, from, to, interval);
+        var uri = OctopusEnergyClient.ComposeGetElectricityConsumptionUri(OctopusEnergyClient.DefaultBaseAddress, mpan, serialNumber, from, to, interval);
 
         var client = TestHelper.CreateClient(uri, consumption);
 
-        var consumption1 = await client.GetElectricityConsumptionAsync("key", mpan, serialNumber, from, to, Interval.Hour);
+        var consumption1 = await client.GetElectricityConsumptionAsync(mpan, serialNumber, from, to, Interval.Hour);
 
         Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
 
@@ -67,7 +67,8 @@ public class ConsumptionTests
         const string serialNumber = "J0123456K";
         const Interval interval = Interval.Hour;
 
-        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetElectricityConsumptionUri(mpan, serialNumber, from, to, interval));
+        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetElectricityConsumptionUri(
+            OctopusEnergyClient.DefaultBaseAddress, mpan, serialNumber, from, to, interval));
     }
 
     [TestMethod]
@@ -80,7 +81,8 @@ public class ConsumptionTests
         const string serialNumber = "";
         const Interval interval = Interval.Hour;
 
-        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetElectricityConsumptionUri(mpan, serialNumber, from, to, interval));
+        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetElectricityConsumptionUri(
+            OctopusEnergyClient.DefaultBaseAddress, mpan, serialNumber, from, to, interval));
     }
 
     [TestMethod]
@@ -114,11 +116,11 @@ public class ConsumptionTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetGasConsumptionUri(mprn, serialNumber, from, to, interval);
+        var uri = OctopusEnergyClient.ComposeGetGasConsumptionUri(OctopusEnergyClient.DefaultBaseAddress, mprn, serialNumber, from, to, interval);
 
         var client = TestHelper.CreateClient(uri, consumption);
 
-        var consumption1 = await client.GetGasConsumptionAsync("key", mprn, serialNumber, from, to, Interval.Hour);
+        var consumption1 = await client.GetGasConsumptionAsync( mprn, serialNumber, from, to, Interval.Hour);
 
         Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
 

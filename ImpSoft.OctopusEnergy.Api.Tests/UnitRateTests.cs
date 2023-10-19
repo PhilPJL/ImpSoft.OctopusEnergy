@@ -43,7 +43,7 @@ public class UnitRateTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetElectricityUnitRatesUri(productCode, tariffCode, rate, from, to);
+        var uri = OctopusEnergyClient.ComposeGetElectricityUnitRatesUri(OctopusEnergyClient.DefaultBaseAddress, productCode, tariffCode, rate, from, to);
 
         var client = TestHelper.CreateClient(uri, charges);
 
@@ -92,7 +92,7 @@ public class UnitRateTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetGasUnitRatesUri(productCode, tariffCode, from, to);
+        var uri = OctopusEnergyClient.ComposeGetGasUnitRatesUri(OctopusEnergyClient.DefaultBaseAddress, productCode, tariffCode, from, to);
 
         var client = TestHelper.CreateClient(uri, charges);
 
