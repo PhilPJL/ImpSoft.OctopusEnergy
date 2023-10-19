@@ -102,7 +102,11 @@ public class Register
     [JsonPropertyName("identifier")] public string Identifier { get; set; } = string.Empty;
 
     [JsonPropertyName("rate")]
+#if NET8_0_OR_GREATER
+    [JsonConverter(typeof(JsonStringEnumConverter<ElectricityUnitRate>))] 
+#else
     [JsonConverter(typeof(JsonStringEnumConverter))] 
+#endif
     public ElectricityUnitRate Rate { get; set; }
     [JsonPropertyName("is_settlement_register")] public bool IsSettlementRegister { get; set; }
 }
