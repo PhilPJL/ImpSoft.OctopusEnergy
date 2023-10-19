@@ -72,7 +72,8 @@ public class ProductsTests
 
         var products = new PagedResults<Product>
         {
-            Results = new List<Product>{ 
+            Results = new List<Product>
+            {
                 new()
                 {
                     AvailableFrom = DateTimeOffset.Now.AddHours(-10),
@@ -99,7 +100,8 @@ public class ProductsTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetProductsUri(OctopusEnergyClient.DefaultBaseAddress, null, null, null, null, null, null);
+        var uri = OctopusEnergyClient.ComposeGetProductsUri(OctopusEnergyClient.DefaultBaseAddress, null, null, null,
+            null, null, null);
 
         var client = TestHelper.CreateClient(uri, products);
 
@@ -127,12 +129,14 @@ public class ProductsTests
     [TestMethod]
     public void GetProductWithNullProductCodeThrows()
     {
-        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, string.Empty, null));
+        Assert.ThrowsException<ArgumentException>(() =>
+            OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, string.Empty, null));
     }
 
     [TestMethod]
     public void GetProductWithEmptyProductCodeThrows()
     {
-        Assert.ThrowsException<ArgumentException>(() => OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, "    ", null));
+        Assert.ThrowsException<ArgumentException>(() =>
+            OctopusEnergyClient.ComposeGetProductUri(OctopusEnergyClient.DefaultBaseAddress, "    ", null));
     }
 }

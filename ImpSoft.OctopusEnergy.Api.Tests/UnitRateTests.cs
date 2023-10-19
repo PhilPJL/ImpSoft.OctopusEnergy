@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace ImpSoft.OctopusEnergy.Api.Tests;
@@ -22,20 +23,21 @@ public class UnitRateTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge> {
+            Results = new List<Charge>
+            {
                 new()
                 {
                     ValidFrom = from,
                     ValidTo = to,
                     ValueExcludingVAT = 20m,
-                    ValueIncludingVAT = 20m*1.2m
+                    ValueIncludingVAT = 20m * 1.2m
                 },
                 new()
                 {
                     ValidFrom = from.AddDays(1),
                     ValidTo = to.AddDays(1),
                     ValueExcludingVAT = 30m,
-                    ValueIncludingVAT = 30m*1.2m
+                    ValueIncludingVAT = 30m * 1.2m
                 }
             },
             Count = 1,
@@ -43,7 +45,8 @@ public class UnitRateTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetElectricityUnitRatesUri(OctopusEnergyClient.DefaultBaseAddress, productCode, tariffCode, rate, from, to);
+        var uri = OctopusEnergyClient.ComposeGetElectricityUnitRatesUri(OctopusEnergyClient.DefaultBaseAddress,
+            productCode, tariffCode, rate, from, to);
 
         var client = TestHelper.CreateClient(uri, charges);
 
@@ -71,20 +74,21 @@ public class UnitRateTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge> {
+            Results = new List<Charge>
+            {
                 new()
                 {
                     ValidFrom = from,
                     ValidTo = to,
                     ValueExcludingVAT = 20m,
-                    ValueIncludingVAT = 20m*1.2m
+                    ValueIncludingVAT = 20m * 1.2m
                 },
                 new()
                 {
                     ValidFrom = from.AddDays(1),
                     ValidTo = to.AddDays(1),
                     ValueExcludingVAT = 30m,
-                    ValueIncludingVAT = 30m*1.2m
+                    ValueIncludingVAT = 30m * 1.2m
                 }
             },
             Count = 1,
@@ -92,7 +96,8 @@ public class UnitRateTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetGasUnitRatesUri(OctopusEnergyClient.DefaultBaseAddress, productCode, tariffCode, from, to);
+        var uri = OctopusEnergyClient.ComposeGetGasUnitRatesUri(OctopusEnergyClient.DefaultBaseAddress, productCode,
+            tariffCode, from, to);
 
         var client = TestHelper.CreateClient(uri, charges);
 

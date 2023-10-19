@@ -30,7 +30,8 @@ internal class FakeHttpMessageHandler<TResponse> : HttpClientHandler where TResp
     private TResponse? ResponseObject { get; }
     private string ResponseString { get; }
 
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
     {
         await Task.Yield();
 
@@ -54,7 +55,8 @@ internal class FakeHttpMessageHandler<TResponse> : HttpClientHandler where TResp
         }
         else
         {
-            throw new InvalidOperationException($"{nameof(httpResponse.Content.Headers.ContentType)} is unexpectedly null.");
+            throw new InvalidOperationException(
+                $"{nameof(httpResponse.Content.Headers.ContentType)} is unexpectedly null.");
         }
 
         return httpResponse;

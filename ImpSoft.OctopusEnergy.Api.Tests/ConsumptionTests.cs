@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace ImpSoft.OctopusEnergy.Api.Tests;
@@ -22,7 +23,8 @@ public class ConsumptionTests
 
         var consumption = new PagedResults<Consumption>
         {
-            Results = new List<Consumption> {
+            Results = new List<Consumption>
+            {
                 new()
                 {
                     Start = from,
@@ -41,7 +43,8 @@ public class ConsumptionTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetElectricityConsumptionUri(OctopusEnergyClient.DefaultBaseAddress, mpan, serialNumber, from, to, interval);
+        var uri = OctopusEnergyClient.ComposeGetElectricityConsumptionUri(OctopusEnergyClient.DefaultBaseAddress, mpan,
+            serialNumber, from, to, interval);
 
         var client = TestHelper.CreateClient(uri, consumption);
 
@@ -50,7 +53,7 @@ public class ConsumptionTests
         Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
 
         var firstExpected = consumption.Results.First();
-         var firstActual = consumption1.First();
+        var firstActual = consumption1.First();
 
         Assert.AreEqual(firstExpected.Start, firstActual.Start);
         Assert.AreEqual(firstExpected.End, firstActual.End);
@@ -97,7 +100,8 @@ public class ConsumptionTests
 
         var consumption = new PagedResults<Consumption>
         {
-            Results = new List<Consumption> {
+            Results = new List<Consumption>
+            {
                 new()
                 {
                     Start = from,
@@ -116,11 +120,12 @@ public class ConsumptionTests
             Previous = string.Empty
         };
 
-        var uri = OctopusEnergyClient.ComposeGetGasConsumptionUri(OctopusEnergyClient.DefaultBaseAddress, mprn, serialNumber, from, to, interval);
+        var uri = OctopusEnergyClient.ComposeGetGasConsumptionUri(OctopusEnergyClient.DefaultBaseAddress, mprn,
+            serialNumber, from, to, interval);
 
         var client = TestHelper.CreateClient(uri, consumption);
 
-        var consumption1 = await client.GetGasConsumptionAsync( mprn, serialNumber, from, to, Interval.Hour);
+        var consumption1 = await client.GetGasConsumptionAsync(mprn, serialNumber, from, to, Interval.Hour);
 
         Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
 

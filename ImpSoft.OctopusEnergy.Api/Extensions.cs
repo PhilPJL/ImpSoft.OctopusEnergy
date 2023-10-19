@@ -71,6 +71,7 @@ public static class Extensions
         Guard.IsNotNull(httpClient, nameof(httpClient));
         Guard.IsNotNullOrWhiteSpace(apiKey, nameof(apiKey));
 
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+            Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey + ":")));
     }
 }

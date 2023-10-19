@@ -86,6 +86,6 @@ public interface IOctopusEnergyClient
     /// <param name="group"></param>
     /// <returns></returns>
     Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string mprn, string serialNumber,
-        DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null, 
+        DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null,
         Interval group = Interval.Default);
 }
