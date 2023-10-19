@@ -107,6 +107,7 @@ public class Register
 #else
     [JsonConverter(typeof(JsonStringEnumConverter))] 
 #endif
+
     public ElectricityUnitRate Rate { get; set; }
     [JsonPropertyName("is_settlement_register")] public bool IsSettlementRegister { get; set; }
 }
