@@ -13,12 +13,21 @@ Guard.IsNotNullOrWhiteSpace(apiKey);
 var electricityMprn = configuration["ElectricityMprn"];
 Guard.IsNotNullOrWhiteSpace(electricityMprn);
 
+var electricitySerialNo = configuration["ElectricitySerialNo"];
+Guard.IsNotNullOrWhiteSpace(electricitySerialNo);
+
+var gasMprn = configuration["GasMprn"];
+Guard.IsNotNullOrWhiteSpace(gasMprn);
+
+var gasSerialNo = configuration["GasSerialNo"];
+Guard.IsNotNullOrWhiteSpace(gasSerialNo);
+
 using var httpClient = new HttpClient();
 
 // Optionally set the base address. If not set it will default to https://api.octopus.energy
-//httpClient.BaseAddress = OctopusEnergyClient.DefaultBaseAddress;
+httpClient.BaseAddress = OctopusEnergyClient.DefaultBaseAddress;
 
-// Optionally configure authentication using your api key.  If not set api methods that require it will fail (gas/electricity consumption).
+// Optionally configure authentication using your api key.  If not set then api methods that require it will fail (gas/electricity consumption).
 httpClient.SetAuthenticationHeaderFromApiKey(apiKey);
 
 var octopusClient = new OctopusEnergyClient(httpClient);

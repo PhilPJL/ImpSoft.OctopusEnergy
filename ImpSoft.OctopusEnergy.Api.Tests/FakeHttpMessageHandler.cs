@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Diagnostics;
+using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
@@ -11,8 +12,8 @@ internal class FakeHttpMessageHandler<TResponse> : HttpClientHandler where TResp
 {
     public FakeHttpMessageHandler(Uri expectedUri, TResponse response)
     {
-        Preconditions.IsNotNull(response, nameof(response));
-        Preconditions.IsNotNull(expectedUri, nameof(expectedUri));
+        Guard.IsNotNull(response);
+        Guard.IsNotNull(expectedUri);
 
 #if NET48_OR_GREATER
         AutomaticDecompression = System.Net.DecompressionMethods.None;

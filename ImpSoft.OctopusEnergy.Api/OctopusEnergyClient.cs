@@ -19,7 +19,7 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 {
     public OctopusEnergyClient(HttpClient client)
     {
-        Preconditions.IsNotNull(client, nameof(client));
+        Guard.IsNotNull(client);
 
         Client = client;
 
@@ -63,7 +63,7 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     internal static Uri ComposeGetProductUri(Uri baseUri, string productCode, DateTimeOffset? tariffsActiveAt)
     {
-        Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
+        Guard.IsNotNullOrWhiteSpace(productCode);
 
         return new Uri(baseUri, $"/v1/products/{productCode}/")
             .AddQueryParam("tariffs_active_at ", tariffsActiveAt);
@@ -94,7 +94,7 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     internal static Uri ComposeGetGridSupplyPointByPostcodeUri(Uri baseUri, string postcode)
     {
-        Preconditions.IsNotNullOrWhiteSpace(postcode, nameof(postcode));
+        Guard.IsNotNullOrWhiteSpace(postcode);
 
         return new Uri(baseUri, $"/v1/industry/grid-supply-points/")
             .AddQueryParam("postcode", postcode);
@@ -135,8 +135,8 @@ public class OctopusEnergyClient : IOctopusEnergyClient
         ElectricityUnitRate rate,
         DateTimeOffset? from, DateTimeOffset? to = null)
     {
-        Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
-        Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
+        Guard.IsNotNullOrWhiteSpace(productCode);
+        Guard.IsNotNullOrWhiteSpace(tariffCode);
 
         return new Uri(baseUri,
                 $"/v1/products/{productCode}/electricity-tariffs/{tariffCode}/{GetRateString()}-unit-rates/")
@@ -168,8 +168,8 @@ public class OctopusEnergyClient : IOctopusEnergyClient
     internal static Uri ComposeGetElectricityStandingChargesUri(Uri baseUri, string productCode, string tariffCode,
         DateTimeOffset? from, DateTimeOffset? to = null)
     {
-        Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
-        Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
+        Guard.IsNotNullOrWhiteSpace(productCode);
+        Guard.IsNotNullOrWhiteSpace(tariffCode);
 
         return new Uri(baseUri, $"/v1/products/{productCode}/electricity-tariffs/{tariffCode}/standing-charges/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
@@ -188,8 +188,8 @@ public class OctopusEnergyClient : IOctopusEnergyClient
     internal static Uri ComposeGetGasUnitRatesUri(Uri baseUri, string productCode, string tariffCode,
         DateTimeOffset? from, DateTimeOffset? to = null)
     {
-        Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
-        Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
+        Guard.IsNotNullOrWhiteSpace(productCode);
+        Guard.IsNotNullOrWhiteSpace(tariffCode);
 
         return new Uri(baseUri, $"/v1/products/{productCode}/gas-tariffs/{tariffCode}/standard-unit-rates/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
@@ -209,8 +209,8 @@ public class OctopusEnergyClient : IOctopusEnergyClient
     internal static Uri ComposeGetGasStandingChargesUri(Uri baseUri, string productCode, string tariffCode,
         DateTimeOffset? from, DateTimeOffset? to = null)
     {
-        Preconditions.IsNotNullOrWhiteSpace(productCode, nameof(productCode));
-        Preconditions.IsNotNullOrWhiteSpace(tariffCode, nameof(tariffCode));
+        Guard.IsNotNullOrWhiteSpace(productCode);
+        Guard.IsNotNullOrWhiteSpace(tariffCode);
 
         return new Uri(baseUri, $"/v1/products/{productCode}/gas-tariffs/{tariffCode}/standing-charges/")
             .AddQueryParam("page_size", MaxTariffsPageSize)
@@ -235,8 +235,8 @@ public class OctopusEnergyClient : IOctopusEnergyClient
     internal static Uri ComposeGetElectricityConsumptionUri(Uri baseUri, string mpan, string serialNumber,
         DateTimeOffset? from, DateTimeOffset? to, Interval interval)
     {
-        Preconditions.IsNotNullOrWhiteSpace(mpan, nameof(mpan));
-        Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
+        Guard.IsNotNullOrWhiteSpace(mpan);
+        Guard.IsNotNullOrWhiteSpace(serialNumber);
 
         return new Uri(baseUri, $"v1/electricity-meter-points/{mpan}/meters/{serialNumber}/consumption/")
             .AddQueryParam(interval)
@@ -256,8 +256,8 @@ public class OctopusEnergyClient : IOctopusEnergyClient
     internal static Uri ComposeGetGasConsumptionUri(Uri baseUri, string mprn, string serialNumber, DateTimeOffset? from,
         DateTimeOffset? to, Interval interval)
     {
-        Preconditions.IsNotNullOrWhiteSpace(mprn, nameof(mprn));
-        Preconditions.IsNotNullOrWhiteSpace(serialNumber, nameof(serialNumber));
+        Guard.IsNotNullOrWhiteSpace(mprn);
+        Guard.IsNotNullOrWhiteSpace(serialNumber);
 
         return new Uri(baseUri, $"v1/gas-meter-points/{mprn}/meters/{serialNumber}/consumption/")
             .AddQueryParam(interval)
