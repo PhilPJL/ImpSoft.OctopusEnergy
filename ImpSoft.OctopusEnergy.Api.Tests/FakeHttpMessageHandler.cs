@@ -1,61 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CommunityToolkit.Diagnostics;
+using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImpSoft.OctopusEnergy.Api.Tests
+namespace ImpSoft.OctopusEnergy.Api.Tests;
+
+internal class FakeHttpMessageHandler<TResponse> : HttpClientHandler where TResponse : class, new()
 {
-    class FakeHttpMessageHandler<TResponse> : HttpClientHandler where TResponse : class
+    public FakeHttpMessageHandler(Uri expectedUri, TResponse response)
     {
-        public FakeHttpMessageHandler(Uri expectedUri, TResponse response)
+        Guard.IsNotNull(response);
+        Guard.IsNotNull(expectedUri);
+
+#if NET48_OR_GREATER
+        AutomaticDecompression = System.Net.DecompressionMethods.None;
+#else
+        AutomaticDecompression = System.Net.DecompressionMethods.All;
+#endif
+        ResponseObject = response;
+        ExpectedRequestUri = expectedUri;
+
+        ResponseString = string.Empty;
+    }
+
+    // ReSharper disable once MemberCanBePrivate.Global
+    public Uri ExpectedRequestUri { get; }
+    private TResponse? ResponseObject { get; }
+    private string ResponseString { get; }
+
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
+    {
+        await Task.Yield();
+
+        if (request.RequestUri?.AbsoluteUri != ExpectedRequestUri.AbsoluteUri)
         {
-            Preconditions.IsNotNull(response, nameof(response));
-            AutomaticDecompression = System.Net.DecompressionMethods.All;
-            ResponseObject = response;
-            ExpectedRequestUri = expectedUri;
-        }
-
-        public FakeHttpMessageHandler(Uri expectedUri, string response)
-        {
-            Preconditions.IsNotNullOrWhiteSpace(response, nameof(response));
-            AutomaticDecompression = System.Net.DecompressionMethods.All;
-            ResponseString = response;
-            ExpectedRequestUri = expectedUri;
-        }
-
-        public FakeHttpMessageHandler(IList<(Uri, TResponse response)> pages)
-        {
-            // TODO: enable faking/testing paged responses
-        }
-
-        private TResponse ResponseObject { get; }
-        private string ResponseString { get; }
-        public Uri ExpectedRequestUri { get; }
-
-        protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            await Task.Yield();
-
-            if (request.RequestUri.AbsoluteUri != ExpectedRequestUri.AbsoluteUri)
+            return new HttpResponseMessage
             {
-                return new HttpResponseMessage
-                {
-                    StatusCode = System.Net.HttpStatusCode.NotFound
-                };
-            }
-
-            Debug.WriteLine(ExpectedRequestUri.AbsoluteUri);
-
-            var httpResponse = ResponseObject != null
-               ? new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(ResponseObject)) }
-               : new HttpResponseMessage { Content = new StringContent(ResponseString) };
-
-            httpResponse.Content.Headers.ContentType.MediaType = "application/json";
-
-            return httpResponse;
+                StatusCode = System.Net.HttpStatusCode.NotFound
+            };
         }
+
+        Debug.WriteLine(ExpectedRequestUri.AbsoluteUri);
+
+        var httpResponse = ResponseObject != null
+            ? new HttpResponseMessage { Content = new StringContent(JsonSerializer.Serialize(ResponseObject)) }
+            : new HttpResponseMessage { Content = new StringContent(ResponseString) };
+
+        if (httpResponse.Content.Headers.ContentType != null)
+        {
+            httpResponse.Content.Headers.ContentType.MediaType = "application/json";
+        }
+        else
+        {
+            throw new InvalidOperationException(
+                $"{nameof(httpResponse.Content.Headers.ContentType)} is unexpectedly null.");
+        }
+
+        return httpResponse;
     }
 }
