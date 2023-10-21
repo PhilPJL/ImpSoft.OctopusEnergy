@@ -88,11 +88,11 @@ public interface IOctopusEnergyClient
     /// <remarks>
     /// Requires authentication
     /// </remarks>
-    /// <param name="mpan"></param>
-    /// <param name="serialNumber"></param>
-    /// <param name="fromDateTime"></param>
-    /// <param name="toDateTime"></param>
-    /// <param name="group"></param>
+    /// <param name="mpan">Meter point administration number/Electricity supply number</param>
+    /// <param name="serialNumber">Meter serial number</param>
+    /// <param name="fromDateTime">Start date and time. </param>
+    /// <param name="toDateTime">End date and time. Defaults to no specified end date.</param>
+    /// <param name="group">Group results by the specified interval.</param>
     /// <returns></returns>
     Task<IEnumerable<Consumption>> GetElectricityConsumptionAsync(string mpan, string serialNumber,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null,
@@ -104,11 +104,11 @@ public interface IOctopusEnergyClient
     /// <remarks>
     /// Requires authentication
     /// </remarks>
-    /// <param name="mprn"></param>
-    /// <param name="serialNumber"></param>
-    /// <param name="fromDateTime"></param>
-    /// <param name="toDateTime"></param>
-    /// <param name="group"></param>
+    /// <param name="mprn">Meter point reference number/Gas supply number</param>
+    /// <param name="serialNumber">Meter serial number</param>
+    /// <param name="fromDateTime">Start date and time. </param>
+    /// <param name="toDateTime">End date and time. Defaults to no specified end date.</param>
+    /// <param name="group">Group results by the specified interval.</param>
     /// <returns></returns>
     Task<IEnumerable<Consumption>> GetGasConsumptionAsync(string mprn, string serialNumber,
         DateTimeOffset? fromDateTime, DateTimeOffset? toDateTime = null,
@@ -117,7 +117,7 @@ public interface IOctopusEnergyClient
     /// <summary>
     /// Get account information
     /// </summary>
-    /// <param name="accountId"></param>
+    /// <param name="accountId">Your Octopus account number</param>
     /// <returns></returns>
     Task<Account> GetAccountAsync(string accountId);
 }
