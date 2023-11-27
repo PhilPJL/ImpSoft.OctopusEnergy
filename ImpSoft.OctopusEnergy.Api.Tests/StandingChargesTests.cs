@@ -51,7 +51,7 @@ public class StandingChargesTests
 
         var charges1 = await client.GetElectricityStandingChargesAsync(productCode, tariffCode, from, to);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();
@@ -104,7 +104,7 @@ public class StandingChargesTests
 
         var charges1 = await client.GetGasStandingChargesAsync(productCode, tariffCode, from, to);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();

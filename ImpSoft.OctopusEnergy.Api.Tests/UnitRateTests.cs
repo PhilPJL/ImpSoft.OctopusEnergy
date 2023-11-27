@@ -52,7 +52,7 @@ public class UnitRateTests
 
         var charges1 = await client.GetElectricityUnitRatesAsync(productCode, tariffCode, from, to, rate);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();
@@ -103,7 +103,7 @@ public class UnitRateTests
 
         var charges1 = await client.GetGasUnitRatesAsync(productCode, tariffCode, from, to);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();

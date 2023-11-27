@@ -50,7 +50,7 @@ public class ConsumptionTests
 
         var consumption1 = await client.GetElectricityConsumptionAsync(mpan, serialNumber, from, to, Interval.Hour);
 
-        Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
+        Assert.AreEqual(consumption.Results.Count, consumption1.Count());
 
         var firstExpected = consumption.Results.First();
         var firstActual = consumption1.First();
@@ -127,7 +127,7 @@ public class ConsumptionTests
 
         var consumption1 = await client.GetGasConsumptionAsync(mprn, serialNumber, from, to, Interval.Hour);
 
-        Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
+        Assert.AreEqual(consumption.Results.Count, consumption1.Count());
 
         var firstExpected = consumption.Results.First();
         var firstActual = consumption1.First();
