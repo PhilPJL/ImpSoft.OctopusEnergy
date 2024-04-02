@@ -22,8 +22,8 @@ public class StandingChargesTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge>
-            {
+            Results =
+            [
                 new()
                 {
                     ValidFrom = from,
@@ -38,7 +38,7 @@ public class StandingChargesTests
                     ValueExcludingVAT = 30m,
                     ValueIncludingVAT = 30m * 1.2m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -75,8 +75,8 @@ public class StandingChargesTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge>
-            {
+            Results =
+            [
                 new()
                 {
                     ValidFrom = from,
@@ -91,7 +91,7 @@ public class StandingChargesTests
                     ValueExcludingVAT = 30m,
                     ValueIncludingVAT = 30m * 1.2m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty

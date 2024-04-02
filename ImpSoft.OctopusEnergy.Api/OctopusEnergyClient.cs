@@ -307,7 +307,9 @@ public class OctopusEnergyClient : IOctopusEnergyClient
 
     private async Task<TResult> GetAsync<TResult>(Uri uri, JsonTypeInfo<TResult> typeInfo) where TResult : class
     {
-        var result = await Client.GetFromJsonAsync<TResult>(uri, typeInfo);
+        Debug.WriteLine(uri);
+
+        var result = await Client.GetFromJsonAsync(uri, typeInfo);
 
         Guard.IsNotNull(result);
 

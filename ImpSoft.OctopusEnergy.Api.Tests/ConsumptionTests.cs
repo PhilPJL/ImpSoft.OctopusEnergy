@@ -23,8 +23,8 @@ public class ConsumptionTests
 
         var consumption = new PagedResults<Consumption>
         {
-            Results = new List<Consumption>
-            {
+            Results =
+            [
                 new()
                 {
                     Start = from,
@@ -37,7 +37,7 @@ public class ConsumptionTests
                     End = from.AddMinutes(60),
                     Quantity = 0.75m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -100,8 +100,8 @@ public class ConsumptionTests
 
         var consumption = new PagedResults<Consumption>
         {
-            Results = new List<Consumption>
-            {
+            Results =
+            [
                 new()
                 {
                     Start = from,
@@ -114,7 +114,7 @@ public class ConsumptionTests
                     End = from.AddMinutes(60),
                     Quantity = 0.75m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
