@@ -22,8 +22,8 @@ public class StandingChargesTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge>
-            {
+            Results =
+            [
                 new()
                 {
                     ValidFrom = from,
@@ -38,7 +38,7 @@ public class StandingChargesTests
                     ValueExcludingVAT = 30m,
                     ValueIncludingVAT = 30m * 1.2m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -51,7 +51,7 @@ public class StandingChargesTests
 
         var charges1 = await client.GetElectricityStandingChargesAsync(productCode, tariffCode, from, to);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();
@@ -75,8 +75,8 @@ public class StandingChargesTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge>
-            {
+            Results =
+            [
                 new()
                 {
                     ValidFrom = from,
@@ -91,7 +91,7 @@ public class StandingChargesTests
                     ValueExcludingVAT = 30m,
                     ValueIncludingVAT = 30m * 1.2m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -104,7 +104,7 @@ public class StandingChargesTests
 
         var charges1 = await client.GetGasStandingChargesAsync(productCode, tariffCode, from, to);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();

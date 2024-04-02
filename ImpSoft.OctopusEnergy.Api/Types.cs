@@ -31,14 +31,14 @@ public class PagedResults<TResult>
     [JsonPropertyName("count")] public int Count { get; set; }
     [JsonPropertyName("next")] public string Next { get; set; } = string.Empty;
     [JsonPropertyName("previous")] public string Previous { get; set; } = string.Empty;
-    [JsonPropertyName("results")] public ICollection<TResult> Results { get; set; } = Array.Empty<TResult>();
+    [JsonPropertyName("results")] public ICollection<TResult> Results { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Account
 {
     [JsonPropertyName("number")] public string Number { get; set; } = string.Empty;
-    [JsonPropertyName("properties")] public ICollection<Property> Properties { get; set; } = Array.Empty<Property>();
+    [JsonPropertyName("properties")] public ICollection<Property> Properties { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -54,8 +54,8 @@ public class Property
     [JsonPropertyName("town")] public string Town { get; set; } = string.Empty;
     [JsonPropertyName("county")] public string County { get; set; } = string.Empty;
     [JsonPropertyName("postcode")] public string Postcode { get; set; } = string.Empty;
-    [JsonPropertyName("electricity_meter_points")] public ICollection<ElectricityMeterPoint> ElectricityMeterPoints { get; set; } = Array.Empty<ElectricityMeterPoint>();
-    [JsonPropertyName("gas_meter_points")] public ICollection<GasMeterPoint> GasMeterPoints { get; set; } = Array.Empty<GasMeterPoint>();
+    [JsonPropertyName("electricity_meter_points")] public ICollection<ElectricityMeterPoint> ElectricityMeterPoints { get; set; } = [];
+    [JsonPropertyName("gas_meter_points")] public ICollection<GasMeterPoint> GasMeterPoints { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -65,8 +65,8 @@ public class ElectricityMeterPoint
     [JsonPropertyName("profile_class")] public int ProfileClass { get; set; }
     [JsonPropertyName("consumption_day")] public int ConsumptionDay { get; set; }
     [JsonPropertyName("consumption_night")] public int ConsumptionNight { get; set; }
-    [JsonPropertyName("meters")] public ICollection<ElectricityMeter> Meters { get; set; } = Array.Empty<ElectricityMeter>();
-    [JsonPropertyName("agreements")] public ICollection<Agreement> Agreements { get; set; } = Array.Empty<Agreement>();
+    [JsonPropertyName("meters")] public ICollection<ElectricityMeter> Meters { get; set; } = [];
+    [JsonPropertyName("agreements")] public ICollection<Agreement> Agreements { get; set; } = [];
     [JsonPropertyName("is_export")] public bool IsExport { get; set; }
 }
 
@@ -79,7 +79,7 @@ public class Meter
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class ElectricityMeter : Meter
 {
-    [JsonPropertyName("registers")] public ICollection<Register> Registers { get; set; } = Array.Empty<Register>();
+    [JsonPropertyName("registers")] public ICollection<Register> Registers { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -87,8 +87,8 @@ public class GasMeterPoint
 {
     [JsonPropertyName("mprn")] public string Mprn { get; set; } = string.Empty;
     [JsonPropertyName("consumption_standard")] public int ConsumptionStandard { get; set; }
-    [JsonPropertyName("meters")] public ICollection<GasMeter> Meters { get; set; } = Array.Empty<GasMeter>();
-    [JsonPropertyName("agreements")] public ICollection<Agreement> Agreements { get; set; } = Array.Empty<Agreement>();
+    [JsonPropertyName("meters")] public ICollection<GasMeter> Meters { get; set; } = [];
+    [JsonPropertyName("agreements")] public ICollection<Agreement> Agreements { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -102,12 +102,7 @@ public class Register
     [JsonPropertyName("identifier")] public string Identifier { get; set; } = string.Empty;
 
     [JsonPropertyName("rate")]
-#if NET8_0_OR_GREATER
     [JsonConverter(typeof(JsonStringEnumConverter<ElectricityUnitRate>))] 
-#else
-    [JsonConverter(typeof(JsonStringEnumConverter))] 
-#endif
-
     public ElectricityUnitRate Rate { get; set; }
     [JsonPropertyName("is_settlement_register")] public bool IsSettlementRegister { get; set; }
 }
@@ -167,7 +162,7 @@ public class ProductBase
     [JsonPropertyName("available_from")] public DateTimeOffset AvailableFrom { get; set; }
     [JsonPropertyName("available_to")] public DateTimeOffset? AvailableTo { get; set; }
 
-    [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; } = Array.Empty<Link>();
+    [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -284,7 +279,7 @@ public class Tariff
     [JsonPropertyName("night_unit_rate_inc_vat")]
     public decimal? NightUnitRateIncludingVAT { get; set; }
 
-    [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; } = Array.Empty<Link>();
+    [JsonPropertyName("links")] public IEnumerable<Link> Links { get; set; } = [];
 }
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
@@ -354,8 +349,8 @@ public class GridSupplyPointInfo
 
     public static IEnumerable<GridSupplyPointInfo> GetAll()
     {
-        return new List<GridSupplyPointInfo>
-        {
+        return
+        [
             new() { GroupId = "_A", AreaId = "10", Area = "East England" },
             new() { GroupId = "_B", AreaId = "11", Area = "East Midlands" },
             new() { GroupId = "_C", AreaId = "12", Area = "London" },
@@ -370,7 +365,7 @@ public class GridSupplyPointInfo
             new() { GroupId = "_L", AreaId = "21", Area = "South Wales" },
             new() { GroupId = "_M", AreaId = "22", Area = "South West England" },
             new() { GroupId = "_N", AreaId = "23", Area = "Yorkshire" }
-        };
+        ];
     }
 }
 

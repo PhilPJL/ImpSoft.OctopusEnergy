@@ -23,8 +23,8 @@ public class ConsumptionTests
 
         var consumption = new PagedResults<Consumption>
         {
-            Results = new List<Consumption>
-            {
+            Results =
+            [
                 new()
                 {
                     Start = from,
@@ -37,7 +37,7 @@ public class ConsumptionTests
                     End = from.AddMinutes(60),
                     Quantity = 0.75m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -50,7 +50,7 @@ public class ConsumptionTests
 
         var consumption1 = await client.GetElectricityConsumptionAsync(mpan, serialNumber, from, to, Interval.Hour);
 
-        Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
+        Assert.AreEqual(consumption.Results.Count, consumption1.Count());
 
         var firstExpected = consumption.Results.First();
         var firstActual = consumption1.First();
@@ -100,8 +100,8 @@ public class ConsumptionTests
 
         var consumption = new PagedResults<Consumption>
         {
-            Results = new List<Consumption>
-            {
+            Results =
+            [
                 new()
                 {
                     Start = from,
@@ -114,7 +114,7 @@ public class ConsumptionTests
                     End = from.AddMinutes(60),
                     Quantity = 0.75m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -127,7 +127,7 @@ public class ConsumptionTests
 
         var consumption1 = await client.GetGasConsumptionAsync(mprn, serialNumber, from, to, Interval.Hour);
 
-        Assert.AreEqual(consumption.Results.Count(), consumption1.Count());
+        Assert.AreEqual(consumption.Results.Count, consumption1.Count());
 
         var firstExpected = consumption.Results.First();
         var firstActual = consumption1.First();

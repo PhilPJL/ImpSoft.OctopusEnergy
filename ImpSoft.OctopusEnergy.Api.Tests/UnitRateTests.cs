@@ -23,8 +23,8 @@ public class UnitRateTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge>
-            {
+            Results =
+            [
                 new()
                 {
                     ValidFrom = from,
@@ -39,7 +39,7 @@ public class UnitRateTests
                     ValueExcludingVAT = 30m,
                     ValueIncludingVAT = 30m * 1.2m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -52,7 +52,7 @@ public class UnitRateTests
 
         var charges1 = await client.GetElectricityUnitRatesAsync(productCode, tariffCode, from, to, rate);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();
@@ -74,8 +74,8 @@ public class UnitRateTests
 
         var charges = new PagedResults<Charge>
         {
-            Results = new List<Charge>
-            {
+            Results =
+            [
                 new()
                 {
                     ValidFrom = from,
@@ -90,7 +90,7 @@ public class UnitRateTests
                     ValueExcludingVAT = 30m,
                     ValueIncludingVAT = 30m * 1.2m
                 }
-            },
+            ],
             Count = 1,
             Next = string.Empty,
             Previous = string.Empty
@@ -103,7 +103,7 @@ public class UnitRateTests
 
         var charges1 = await client.GetGasUnitRatesAsync(productCode, tariffCode, from, to);
 
-        Assert.AreEqual(charges.Results.Count(), charges1.Count());
+        Assert.AreEqual(charges.Results.Count, charges1.Count());
 
         var firstExpected = charges.Results.First();
         var firstActual = charges1.First();

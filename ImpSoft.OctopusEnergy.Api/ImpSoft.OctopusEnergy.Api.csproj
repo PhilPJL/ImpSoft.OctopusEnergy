@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.0-pre.10</Version>
+    <Version>4.0.0-pre.12</Version>
     <Authors>Philip Lee</Authors>
     <Company>ImpSoft</Company>
     <Product>Octopus Energy API wrapper</Product>
@@ -22,7 +22,7 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>none</PackageReleaseNotes>
-    <Copyright>Copyright © Philip Lee 2020-2023</Copyright>
+    <Copyright>Copyright © Philip Lee 2020-2024</Copyright>
     <FileVersion>4.0.0</FileVersion>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -32,10 +32,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.1" />
-    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
